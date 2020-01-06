@@ -5,37 +5,38 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace BowlingGameHdcp
+namespace TenPinsBowlingGameHdcp
 {
     public class Class1
     {
     }
 
-    public enum Status
+    internal enum MyFStatus
     {
         Points,
-        Spare,
-        Strike,
-        TenthFrameStrike,
-        TenthFrameSpare
+        //Spare,
+        //Strike,
+        //TenthFrameStrike,
+        //TenthFrameSpare
+        TenthFrameWithBonus
     }
 
-    public enum CurrentBowlTry
+    internal enum CurrentBowlTry
     {
         FirstBowl,
         SecondBowl,
         ThirdBowl
     }
 
-    public class BowlingFrame
+    internal class BowlingFrame
     {
-        public Status FrameStatus;
+        public MyFStatus FrameStatus;
 
         public int FirstBowlScore = -1;
         public int SecondBowlScore = -1;
-        public int ThirdBowlScore = -1;
+        public int ThirdBowlBonusScore = -1;
 
-        public CurrentBowlTry CurrentBowlTryForTheFrame;
+        //public CurrentBowlTry CurrentBowlTryForTheFrame;
 
         public bool IsFrameClose = false;
 
@@ -43,7 +44,7 @@ namespace BowlingGameHdcp
 
     }
 
-    public class BowlingGame
+    internal class BowlingGame
     {
         BowlingFrame[] ArrayOfFrames = new BowlingFrame[10];
         public int CurrentFrame = 0;
@@ -55,13 +56,13 @@ namespace BowlingGameHdcp
 
             if (CurrentFrame == 7)
             {
-                Thread.Sleep(4000);
+                Thread.Sleep(500);
                 Console.WriteLine("--- SLEEPING ---");
             }
                 
 
-            if (CurrentFrame > 8 && (ArrayOfFrames[CurrentFrame - 1].FrameStatus == Status.TenthFrameStrike ||
-                                     ArrayOfFrames[CurrentFrame - 1].FrameStatus == Status.TenthFrameSpare))
+            //if (CurrentFrame > 8 && (ArrayOfFrames[CurrentFrame - 1].FrameStatus == Status.TenthFrameStrike)) || ArrayOfFrames[CurrentFrame - 1].FrameStatus == Status.TenthFrameSpare))
+            if (CurrentFrame > 8 && ArrayOfFrames[CurrentFrame - 1].FrameStatus == MyFStatus.TenthFrameWithBonus)
                 CurrentFrame = 9;
             
             if (ArrayOfFrames[CurrentFrame] == null)
@@ -76,48 +77,49 @@ namespace BowlingGameHdcp
                         {
                             ArrayOfFrames[CurrentFrame - 1].SecondBowlScore = kickedPins;
                         }
-                        else if (ArrayOfFrames[CurrentFrame - 1].SecondBowlScore != -1 && ArrayOfFrames[CurrentFrame - 1].ThirdBowlScore == -1)
+                        else if (ArrayOfFrames[CurrentFrame - 1].SecondBowlScore != -1 && ArrayOfFrames[CurrentFrame - 1].ThirdBowlBonusScore == -1)
                         {
-                            ArrayOfFrames[CurrentFrame - 1].ThirdBowlScore = kickedPins;
+                            ArrayOfFrames[CurrentFrame - 1].ThirdBowlBonusScore = kickedPins;
                             ArrayOfFrames[CurrentFrame - 1].IsFrameRedyForScore = true;
                         }
 
-                        if (CurrentFrame > 1 && ArrayOfFrames[CurrentFrame - 2].ThirdBowlScore == -1)
+                        if (CurrentFrame > 1 && ArrayOfFrames[CurrentFrame - 2].ThirdBowlBonusScore == -1)
                         {
-                            ArrayOfFrames[CurrentFrame - 2].ThirdBowlScore = kickedPins;
+                            ArrayOfFrames[CurrentFrame - 2].ThirdBowlBonusScore = kickedPins;
                             ArrayOfFrames[CurrentFrame - 2].IsFrameRedyForScore = true;
                         }
                     }
 
                     if (CurrentFrame == 9)
-                        ArrayOfFrames[CurrentFrame].FrameStatus = Status.TenthFrameStrike;
-                    else
-                        ArrayOfFrames[CurrentFrame].FrameStatus = Status.Strike;
+                        ArrayOfFrames[CurrentFrame].FrameStatus = MyFStatus.TenthFrameWithBonus;
+                        //ArrayOfFrames[CurrentFrame].FrameStatus = Status.TenthFrameStrike;
+                    //else
+                    //    ArrayOfFrames[CurrentFrame].FrameStatus = Status.Strike;
                     ArrayOfFrames[CurrentFrame].IsFrameClose = true;
-                    ArrayOfFrames[CurrentFrame].CurrentBowlTryForTheFrame = CurrentBowlTry.FirstBowl;
+                    //ArrayOfFrames[CurrentFrame].CurrentBowlTryForTheFrame = CurrentBowlTry.FirstBowl;
                     
                 }
 
                 if (kickedPins < 10)
                 {
                     ArrayOfFrames[CurrentFrame].FirstBowlScore = kickedPins;
-                    ArrayOfFrames[CurrentFrame].FrameStatus = Status.Points;
-                    ArrayOfFrames[CurrentFrame].CurrentBowlTryForTheFrame = CurrentBowlTry.FirstBowl;
+                    ArrayOfFrames[CurrentFrame].FrameStatus = MyFStatus.Points;
+                    //ArrayOfFrames[CurrentFrame].CurrentBowlTryForTheFrame = CurrentBowlTry.FirstBowl;
                     if (CurrentFrame > 0)
                     {
                         if (ArrayOfFrames[CurrentFrame - 1].SecondBowlScore == -1)
                         {
                             ArrayOfFrames[CurrentFrame - 1].SecondBowlScore = kickedPins;
                         }
-                        else if (ArrayOfFrames[CurrentFrame - 1].SecondBowlScore != -1 && ArrayOfFrames[CurrentFrame - 1].ThirdBowlScore == -1)
+                        else if (ArrayOfFrames[CurrentFrame - 1].SecondBowlScore != -1 && ArrayOfFrames[CurrentFrame - 1].ThirdBowlBonusScore == -1)
                         {
-                            ArrayOfFrames[CurrentFrame - 1].ThirdBowlScore = kickedPins;
+                            ArrayOfFrames[CurrentFrame - 1].ThirdBowlBonusScore = kickedPins;
                             ArrayOfFrames[CurrentFrame - 1].IsFrameRedyForScore = true;
                         }
 
-                        if (CurrentFrame > 1 && ArrayOfFrames[CurrentFrame - 2].ThirdBowlScore == -1)
+                        if (CurrentFrame > 1 && ArrayOfFrames[CurrentFrame - 2].ThirdBowlBonusScore == -1)
                         {
-                            ArrayOfFrames[CurrentFrame - 2].ThirdBowlScore = kickedPins;
+                            ArrayOfFrames[CurrentFrame - 2].ThirdBowlBonusScore = kickedPins;
                             ArrayOfFrames[CurrentFrame - 2].IsFrameRedyForScore = true;
                         }
                     }
@@ -126,75 +128,100 @@ namespace BowlingGameHdcp
             }
             else
             {
-                if (ArrayOfFrames[CurrentFrame - 1].SecondBowlScore == -1)
-                    ArrayOfFrames[CurrentFrame - 1].SecondBowlScore = kickedPins;
-                else if (ArrayOfFrames[CurrentFrame - 1].SecondBowlScore != -1 &&
-                         ArrayOfFrames[CurrentFrame - 1].ThirdBowlScore == -1)
+                if (CurrentFrame > 0)
                 {
-                    ArrayOfFrames[CurrentFrame - 1].ThirdBowlScore = kickedPins;
-                    ArrayOfFrames[CurrentFrame - 1].IsFrameRedyForScore = true;
+                    if (ArrayOfFrames[CurrentFrame - 1].SecondBowlScore == -1)
+                        ArrayOfFrames[CurrentFrame - 1].SecondBowlScore = kickedPins;
+                    else if (ArrayOfFrames[CurrentFrame - 1].SecondBowlScore != -1 &&
+                             ArrayOfFrames[CurrentFrame - 1].ThirdBowlBonusScore == -1)
+                    {
+                        ArrayOfFrames[CurrentFrame - 1].ThirdBowlBonusScore = kickedPins;
+                        ArrayOfFrames[CurrentFrame - 1].IsFrameRedyForScore = true;
+                    }
                 }
+                
 
 
-                if (ArrayOfFrames[CurrentFrame].FrameStatus != Status.TenthFrameStrike &&
-                    ArrayOfFrames[CurrentFrame].FrameStatus != Status.TenthFrameSpare)
+                //if (ArrayOfFrames[CurrentFrame].FrameStatus != Status.TenthFrameStrike && ArrayOfFrames[CurrentFrame].FrameStatus != Status.TenthFrameSpare)
+                if (ArrayOfFrames[CurrentFrame].FrameStatus != MyFStatus.TenthFrameWithBonus)
                 {
                     if (ArrayOfFrames[CurrentFrame].FirstBowlScore != -1)
                     {
                         if (ArrayOfFrames[CurrentFrame].SecondBowlScore == -1)
                         {
                             ArrayOfFrames[CurrentFrame].SecondBowlScore = kickedPins;
-                            ArrayOfFrames[CurrentFrame].CurrentBowlTryForTheFrame = CurrentBowlTry.SecondBowl;
+                            //ArrayOfFrames[CurrentFrame].CurrentBowlTryForTheFrame = CurrentBowlTry.SecondBowl;
                             if (ArrayOfFrames[CurrentFrame].FirstBowlScore + ArrayOfFrames[CurrentFrame].SecondBowlScore == 10)
                             {
                                 if (CurrentFrame == 9)
-                                    ArrayOfFrames[CurrentFrame].FrameStatus = Status.TenthFrameSpare;
-                                else
-                                    ArrayOfFrames[CurrentFrame].FrameStatus = Status.Spare;
+                                    ArrayOfFrames[CurrentFrame].FrameStatus = MyFStatus.TenthFrameWithBonus;
+                                //if (CurrentFrame == 9)
+                                //    ArrayOfFrames[CurrentFrame].FrameStatus = Status.TenthFrameSpare;
+                                //else
+                                //    ArrayOfFrames[CurrentFrame].FrameStatus = Status.Spare;
                                 ArrayOfFrames[CurrentFrame].IsFrameClose = true;
                             }
                             else
                             {
-                                ArrayOfFrames[CurrentFrame].ThirdBowlScore = 0;
+                                ArrayOfFrames[CurrentFrame].ThirdBowlBonusScore = 0;
                                 ArrayOfFrames[CurrentFrame].IsFrameClose = true;
                                 ArrayOfFrames[CurrentFrame].IsFrameRedyForScore = true;
                             }
                         }
                     }
                 }
-                else if (ArrayOfFrames[CurrentFrame].FrameStatus == Status.TenthFrameStrike)
+                //else if (ArrayOfFrames[CurrentFrame].FrameStatus == Status.TenthFrameStrike)
+                else if (ArrayOfFrames[CurrentFrame].FrameStatus == MyFStatus.TenthFrameWithBonus)
                 {
                     if (ArrayOfFrames[CurrentFrame].SecondBowlScore == -1)
                         ArrayOfFrames[CurrentFrame].SecondBowlScore = kickedPins;
-                    else if (ArrayOfFrames[CurrentFrame].ThirdBowlScore == -1)
+                    else if (ArrayOfFrames[CurrentFrame].ThirdBowlBonusScore == -1)
                     {
-                        ArrayOfFrames[CurrentFrame].ThirdBowlScore = kickedPins;
+                        ArrayOfFrames[CurrentFrame].ThirdBowlBonusScore = kickedPins;
                         ArrayOfFrames[CurrentFrame].IsFrameRedyForScore = true;
                     }
                 }
-                else if (ArrayOfFrames[CurrentFrame].FrameStatus == Status.TenthFrameSpare)
-                {
-                    if (ArrayOfFrames[CurrentFrame].SecondBowlScore == -1)
-                        ArrayOfFrames[CurrentFrame].SecondBowlScore = kickedPins;
-                    else if (ArrayOfFrames[CurrentFrame].SecondBowlScore != -1 &&
-                             ArrayOfFrames[CurrentFrame].ThirdBowlScore == -1)
-                    {
-                        ArrayOfFrames[CurrentFrame].ThirdBowlScore = kickedPins;
-                        ArrayOfFrames[CurrentFrame].IsFrameRedyForScore = true;
-                    }
-                }
+                //else if (ArrayOfFrames[CurrentFrame].FrameStatus == Status.TenthFrameSpare)
+                //{
+                //    if (ArrayOfFrames[CurrentFrame].SecondBowlScore == -1)
+                //        ArrayOfFrames[CurrentFrame].SecondBowlScore = kickedPins;
+                //    else if (ArrayOfFrames[CurrentFrame].SecondBowlScore != -1 &&
+                //             ArrayOfFrames[CurrentFrame].ThirdBowlScore == -1)
+                //    {
+                //        ArrayOfFrames[CurrentFrame].ThirdBowlScore = kickedPins;
+                //        ArrayOfFrames[CurrentFrame].IsFrameRedyForScore = true;
+                //    }
+                //}
+
             }
 
-            if (CurrentFrame > 0 && ArrayOfFrames[CurrentFrame - 1] != null)
-            {
-                for (int countIndex = 0; countIndex <= CurrentFrame; countIndex++)
-                {
-                    if (ArrayOfFrames[countIndex].IsFrameRedyForScore)
-                        gameScore += ArrayOfFrames[countIndex].FirstBowlScore +
-                                     ArrayOfFrames[countIndex].SecondBowlScore +
-                                     ArrayOfFrames[countIndex].ThirdBowlScore;
 
-                }
+
+            //if (CurrentFrame > 0)// && ArrayOfFrames[CurrentFrame - 1] != null)
+            //{
+            //    for (int countIndex = 0; countIndex <= CurrentFrame; countIndex++)
+            //    {
+            //        if (ArrayOfFrames[countIndex].IsFrameRedyForScore)
+            //            gameScore += ArrayOfFrames[countIndex].FirstBowlScore +
+            //                         ArrayOfFrames[countIndex].SecondBowlScore +
+            //                         ArrayOfFrames[countIndex].ThirdBowlScore;
+
+            //    }
+            //}
+            //else if (CurrentFrame == 0 && ArrayOfFrames[CurrentFrame].IsFrameRedyForScore)
+            //{
+            //    gameScore += ArrayOfFrames[CurrentFrame].FirstBowlScore +
+            //                 ArrayOfFrames[CurrentFrame].SecondBowlScore +
+            //                 ArrayOfFrames[CurrentFrame].ThirdBowlScore;
+            //}
+
+            for (int countIndex = 0; countIndex <= CurrentFrame; countIndex++)
+            {
+                if (ArrayOfFrames[countIndex].IsFrameRedyForScore)
+                    gameScore += ArrayOfFrames[countIndex].FirstBowlScore +
+                                 ArrayOfFrames[countIndex].SecondBowlScore +
+                                 ArrayOfFrames[countIndex].ThirdBowlBonusScore;
+
             }
 
             CurrentFrame++;

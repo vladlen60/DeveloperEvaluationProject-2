@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BowlingGameHdcp", "HdcpScore\BowlingGameHdcp.csproj", "{A1596348-6A44-4C58-A5B8-003955059791}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TenPinsBowlingGameHdcp", "HdcpScore\TenPinsBowlingGameHdcp.csproj", "{A1596348-6A44-4C58-A5B8-003955059791}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
