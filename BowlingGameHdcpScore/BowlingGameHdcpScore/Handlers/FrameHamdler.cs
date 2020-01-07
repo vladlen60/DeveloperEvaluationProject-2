@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TenPinsBowlingGameHdcp.Common;
 
-namespace TenPinsBowlingGameHdcp
+namespace TenPinsBowlingGameHdcp.Handlers
 {
-    public class GameHandler
+    public class FrameHamdler
     {
         private readonly int _defaultValueForBowlThrow = CommonGameData.DefaultValueForTheBowlThrow;
-        private readonly int _startingPinsNumber = CommonGameData.StartingPinsNumber;
-        private readonly int _maxFramesNumberIndex = CommonGameData.MaxFramesNumber - 1;
 
 
         public void SetFirstBowlForFrame(Frame frame, int kickedPins)
@@ -37,7 +32,7 @@ namespace TenPinsBowlingGameHdcp
             }
         }
 
-        public void SetIsReadyToScoreForFrame(Frame frame)
+        public void SetIsReadyToScoreForFrameToTrue(Frame frame)
         {
             ValidateForNull(frame);
             if (frame.ThirdBowlBonusScore != _defaultValueForBowlThrow)
@@ -46,22 +41,38 @@ namespace TenPinsBowlingGameHdcp
             }
         }
 
-        public void SetIsFrameClosedFlag(Frame frame)
+        public void SetIsFrameClosedFlagToTrue(Frame frame)
         {
             ValidateForNull(frame);
             frame.SetIsFrameClosed(true);
         }
 
-        public void SetBonusFlagForFinalFrame(Frame frame)
+        public void SetStatusForCurrentFrame(Frame frame, FrameStatus frameStatus)
         {
             ValidateForNull(frame);
-            frame.SetBonusStatusForFinalFrame(frame);
+            ValidateEnumValues(frameStatus);
+            frame.SetStatusForCurrentFrame(frameStatus);
         }
+
+        public void SetIsFinalFrameFlagToTrue(Frame frame)
+        {
+            ValidateForNull(frame);
+            frame.SetIsFinalFrame(true);
+        }
+
+
 
         private void ValidateForNull(Frame frame)
         {
             if (frame == null)
                 throw new ArgumentNullException("The Frame is Null. Pls check.");
         }
-}
+
+        private void ValidateEnumValues(FrameStatus frameStatus)
+        {
+            bool correctValue = Enum.IsDefined(typeof(FrameStatus), frameStatus);
+            if (!correctValue)
+                throw new ArgumentNullException("The FrameStatus provided, is incorect. Pls check.");
+        }
+    }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TenPinsBowlingGameHdcp.Utilities;
 
 namespace TenPinsBowlingGameHdcp
 {
@@ -22,18 +23,9 @@ namespace TenPinsBowlingGameHdcp
             //var gameInput = "10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 7,3, 8";
             //var gameInput = "10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 7,3, 8, 1";
 
- 
-            var inputListFrom = gameInput.Split(',');
-            List<int> intInputList = new List<int>();
 
-            
-
-            foreach (var input in inputListFrom)
-            {
-                input.Trim();
-                int charIntoIntInput = Convert.ToInt32(input);
-                intInputList.Add(charIntoIntInput);
-            }
+            GameUtilities gameUtitlities = new GameUtilities();
+            List<int> intInputList = gameUtitlities.ParseGameInputString(gameInput);
 
             int count = 1;
             int score = 0;
@@ -69,17 +61,8 @@ namespace TenPinsBowlingGameHdcp
             foreach (var singleGameInput in gameInputArray)
             {
                 TenPinsGame class2 = new TenPinsGame();
-                var inputListFrom2 = singleGameInput.Split(',');
-                List<int> intInputList2 = new List<int>();
-
-
-
-                foreach (var input2 in inputListFrom2)
-                {
-                    input2.Trim();
-                    int charIntoIntInput2 = Convert.ToInt32(input2);
-                    intInputList2.Add(charIntoIntInput2);
-                }
+                GameUtilities gameUtitlities2 = new GameUtilities();
+                List<int> intInputList2 = gameUtitlities2.ParseGameInputString(singleGameInput);
 
                 int score2 = 0;
                 foreach (var i2 in intInputList2)

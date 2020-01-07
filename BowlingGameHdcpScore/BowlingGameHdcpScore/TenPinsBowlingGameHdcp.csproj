@@ -67,15 +67,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="CommonGameData.cs" />
+    <Compile Include="Common\CommonGameData.cs" />
     <Compile Include="Frame.cs" />
-    <Compile Include="FrameIndexer.cs" />
-    <Compile Include="GameHandler.cs" />
+    <Compile Include="Handlers\FrameHamdler.cs" />
+    <Compile Include="Handlers\GameHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScoreCalculator.cs" />
     <Compile Include="TenPinsGame.cs" />
+    <Compile Include="Utilities\GameUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
