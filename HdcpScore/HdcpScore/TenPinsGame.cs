@@ -14,6 +14,11 @@ namespace TenPinsBowlingGameHdcp
         private readonly int _defaultValueForBowlThrow = CommonGameData.DefaultValueForTheBowlThrow;
         private readonly int _startingPinsNumber = CommonGameData.StartingPinsNumber;
         private readonly int _maxFramesNumberIndex = CommonGameData.MaxFramesNumber - 1;
+        private const int _thirdBowlWithoutBonus = 0;
+
+        private readonly GameHandler _gameHandler = new GameHandler();
+
+        private bool _newFrameIsNotSet => ArrayOfFrames[_currentFrameIndex] == null;
 
 
 
@@ -21,117 +26,55 @@ namespace TenPinsBowlingGameHdcp
         {
             int gameScore = 0;
             int previousFrameIndex = _currentFrameIndex - 1;
-            int twoFramesAgoIndex = _currentFrameIndex - 2;
+            int beforeLastFrameIndex = _currentFrameIndex - 2;
 
-            if (_currentFrameIndex > 8 &&
+
+            if (_currentFrameIndex >= _maxFramesNumberIndex &&
                 ArrayOfFrames[previousFrameIndex].FrameStatus == FrameStatus.TenthFrameWithBonus)
             {
                 _currentFrameIndex = _maxFramesNumberIndex;
                 previousFrameIndex = _currentFrameIndex - 1;
-                twoFramesAgoIndex = _currentFrameIndex - 2;
+                beforeLastFrameIndex = _currentFrameIndex - 2;
             }
 
-            if (ArrayOfFrames[_currentFrameIndex] == null)
+            //if (ArrayOfFrames[_currentFrameIndex] == null)
+            if (_newFrameIsNotSet)
             {
                 ArrayOfFrames[_currentFrameIndex] = new Frame();
+
+                SetInitialValueForNewFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
+                if (_currentFrameIndex > 0)
+                {
+                    HandlePreviousFrame(ArrayOfFrames[previousFrameIndex], kickedPins);
+
+                    if (_currentFrameIndex > 1)
+                        HandleFrameBeforeLast(ArrayOfFrames[beforeLastFrameIndex], kickedPins);
+                }
+
                 if (kickedPins == _startingPinsNumber)
                 {
-                    ArrayOfFrames[_currentFrameIndex].SetFirstBowlScore(kickedPins);
-                    if (_currentFrameIndex > 0)
-                    {
-                        if (ArrayOfFrames[previousFrameIndex].SecondBowlScore == _defaultValueForBowlThrow)
-                        {
-                            ArrayOfFrames[previousFrameIndex].SetSecondBowlScore(kickedPins);
-                        }
-                        else if (ArrayOfFrames[previousFrameIndex].SecondBowlScore != _defaultValueForBowlThrow && ArrayOfFrames[previousFrameIndex].ThirdBowlBonusScore == _defaultValueForBowlThrow)
-                        {
-                            ArrayOfFrames[previousFrameIndex].SetThirdBowlBonusScore(kickedPins);
-                            ArrayOfFrames[previousFrameIndex].SetIsFrameReadyForScore(true);
-                        }
-
-                        if (_currentFrameIndex > 1 && ArrayOfFrames[twoFramesAgoIndex].ThirdBowlBonusScore == _defaultValueForBowlThrow)
-                        {
-                            ArrayOfFrames[twoFramesAgoIndex].SetThirdBowlBonusScore(kickedPins);
-                            ArrayOfFrames[twoFramesAgoIndex].SetIsFrameReadyForScore(true);
-                        }
-                    }
-
-                    if (_currentFrameIndex == _maxFramesNumberIndex)
-                        ArrayOfFrames[_currentFrameIndex].FrameStatus = FrameStatus.TenthFrameWithBonus;
-                    ArrayOfFrames[_currentFrameIndex].SetIsFrameClosed(true);
+                    HandleCurrentStrikeFrame(ArrayOfFrames[_currentFrameIndex]);
                 }
 
-                if (kickedPins < _startingPinsNumber)
-                {
-                    ArrayOfFrames[_currentFrameIndex].SetFirstBowlScore(kickedPins);
-                    ArrayOfFrames[_currentFrameIndex].FrameStatus = FrameStatus.Points;
-                    if (_currentFrameIndex > 0)
-                    {
-                        if (ArrayOfFrames[previousFrameIndex].SecondBowlScore == _defaultValueForBowlThrow)
-                        {
-                            ArrayOfFrames[previousFrameIndex].SetSecondBowlScore(kickedPins);
-                        }
-                        else if (ArrayOfFrames[previousFrameIndex].SecondBowlScore != _defaultValueForBowlThrow && ArrayOfFrames[previousFrameIndex].ThirdBowlBonusScore == _defaultValueForBowlThrow)
-                        {
-                            ArrayOfFrames[previousFrameIndex].SetThirdBowlBonusScore(kickedPins);
-                            ArrayOfFrames[previousFrameIndex].SetIsFrameReadyForScore(true);
-                        }
-
-                        if (_currentFrameIndex > 1 && ArrayOfFrames[twoFramesAgoIndex].ThirdBowlBonusScore == _defaultValueForBowlThrow)
-                        {
-                            ArrayOfFrames[twoFramesAgoIndex].SetThirdBowlBonusScore(kickedPins);
-                            ArrayOfFrames[twoFramesAgoIndex].SetIsFrameReadyForScore(true);
-                        }
-                    }
-                    _currentFrameIndex--;
-                }
+                ReduceIndexIfFirstThrowIsNotStrike(kickedPins);
             }
             else
             {
                 if (_currentFrameIndex > 0)
                 {
-                    if (ArrayOfFrames[previousFrameIndex].SecondBowlScore == _defaultValueForBowlThrow)
-                        ArrayOfFrames[previousFrameIndex].SetSecondBowlScore(kickedPins);
-                    else if (ArrayOfFrames[previousFrameIndex].SecondBowlScore != _defaultValueForBowlThrow &&
-                             ArrayOfFrames[previousFrameIndex].ThirdBowlBonusScore == _defaultValueForBowlThrow)
-                    {
-                        ArrayOfFrames[previousFrameIndex].SetThirdBowlBonusScore(kickedPins);
-                        ArrayOfFrames[previousFrameIndex].SetIsFrameReadyForScore(true);
-                    }
+                    HandlePreviousFrame(ArrayOfFrames[previousFrameIndex], kickedPins);
                 }
-
 
                 if (ArrayOfFrames[_currentFrameIndex].FrameStatus != FrameStatus.TenthFrameWithBonus)
                 {
                     if (ArrayOfFrames[_currentFrameIndex].FirstBowlScore != _defaultValueForBowlThrow)
                     {
-                        if (ArrayOfFrames[_currentFrameIndex].SecondBowlScore == _defaultValueForBowlThrow)
-                        {
-                            ArrayOfFrames[_currentFrameIndex].SetSecondBowlScore(kickedPins);
-                            if (ArrayOfFrames[_currentFrameIndex].FirstBowlScore + ArrayOfFrames[_currentFrameIndex].SecondBowlScore == _startingPinsNumber)
-                            {
-                                if (_currentFrameIndex == _maxFramesNumberIndex)
-                                    ArrayOfFrames[_currentFrameIndex].FrameStatus = FrameStatus.TenthFrameWithBonus;
-                                ArrayOfFrames[_currentFrameIndex].SetIsFrameClosed(true);
-                            }
-                            else
-                            {
-                                ArrayOfFrames[_currentFrameIndex].SetThirdBowlBonusScore(0);
-                                ArrayOfFrames[_currentFrameIndex].SetIsFrameClosed(true);
-                                ArrayOfFrames[_currentFrameIndex].SetIsFrameReadyForScore(true);
-                            }
-                        }
+                        HandleCurrentFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
                     }
                 }
                 else if (ArrayOfFrames[_currentFrameIndex].FrameStatus == FrameStatus.TenthFrameWithBonus)
                 {
-                    if (ArrayOfFrames[_currentFrameIndex].SecondBowlScore == _defaultValueForBowlThrow)
-                        ArrayOfFrames[_currentFrameIndex].SetSecondBowlScore(kickedPins);
-                    else if (ArrayOfFrames[_currentFrameIndex].ThirdBowlBonusScore == _defaultValueForBowlThrow)
-                    {
-                        ArrayOfFrames[_currentFrameIndex].SetThirdBowlBonusScore(kickedPins);
-                        ArrayOfFrames[_currentFrameIndex].SetIsFrameReadyForScore(true);
-                    }
+                    HandleFinalFrameWithBonus(ArrayOfFrames[_currentFrameIndex], kickedPins);
                 }
             }
 
@@ -140,6 +83,86 @@ namespace TenPinsBowlingGameHdcp
             _currentFrameIndex++;
 
             return gameScore;
+        }
+
+
+
+
+
+
+        private void SetInitialValueForNewFrame(Frame currentFrame, int kickedPins)
+        {
+            _gameHandler.SetFirstBowlForFrame(currentFrame, kickedPins);
+        }
+
+        private void HandleCurrentFrame(Frame currentFrame, int kickedPins)
+        {
+            _gameHandler.SetSecondBowlForFrame(currentFrame, kickedPins);
+            HandleCurrentSpareFrame(currentFrame);
+            HandleCurrentRegularFrame(currentFrame);
+            currentFrame.SetIsFrameClosed(true);
+        }
+
+        private void HandleCurrentStrikeFrame(Frame currentFrame)
+        {
+            if (_currentFrameIndex == _maxFramesNumberIndex)
+                _gameHandler.SetBonusFlagForFinalFrame(currentFrame);
+            _gameHandler.SetIsFrameClosedFlag(currentFrame);
+        }
+
+        private void HandleCurrentSpareFrame(Frame currentFrame)
+        {
+            if (currentFrame.FirstBowlScore + currentFrame.SecondBowlScore == _startingPinsNumber)
+            {
+                if (_currentFrameIndex == _maxFramesNumberIndex)
+                    _gameHandler.SetBonusFlagForFinalFrame(currentFrame);
+            }
+        }
+
+        private void HandleCurrentRegularFrame(Frame currentFrame)
+        {
+            if (currentFrame.FirstBowlScore + currentFrame.SecondBowlScore != _startingPinsNumber)
+            {
+                _gameHandler.SetThirdBowlForFrame(currentFrame, _thirdBowlWithoutBonus); 
+                _gameHandler.SetIsReadyToScoreForFrame(currentFrame);
+            }
+        }
+
+        private void HandlePreviousFrame(Frame previousFrame, int kickedPins)
+        {
+            if (previousFrame.SecondBowlScore == _defaultValueForBowlThrow)
+            {
+                _gameHandler.SetSecondBowlForFrame(previousFrame, kickedPins);
+            }
+            else if (previousFrame.SecondBowlScore != _defaultValueForBowlThrow &&
+                     previousFrame.ThirdBowlBonusScore == _defaultValueForBowlThrow)
+            {
+                _gameHandler.SetThirdBowlForFrame(previousFrame, kickedPins);
+                _gameHandler.SetIsReadyToScoreForFrame(previousFrame);
+            }
+        }
+
+        private void HandleFrameBeforeLast(Frame beforeLastFrame, int kickedPins)
+        {
+            _gameHandler.SetThirdBowlForFrame(beforeLastFrame, kickedPins);
+            _gameHandler.SetIsReadyToScoreForFrame(beforeLastFrame);
+        }
+
+        private void HandleFinalFrameWithBonus(Frame currentFrame, int kickedPins)
+        {
+            if (currentFrame.SecondBowlScore == _defaultValueForBowlThrow)
+                _gameHandler.SetSecondBowlForFrame(currentFrame, kickedPins);
+            else if (currentFrame.ThirdBowlBonusScore == _defaultValueForBowlThrow)
+            {
+                _gameHandler.SetThirdBowlForFrame(currentFrame, kickedPins);
+                _gameHandler.SetIsReadyToScoreForFrame(currentFrame);
+            }
+        }
+
+        private void ReduceIndexIfFirstThrowIsNotStrike(int kickedPins)
+        {
+            if (kickedPins < _startingPinsNumber)
+                _currentFrameIndex--;
         }
     }
 }

@@ -15,37 +15,13 @@ namespace TenPinsBowlingGameHdcp
 
     public class Frame
     {
-        //private FrameStatus frameStatus;
-        //private int firstBowlScore = -1;
-        //private int secondBowlScore = -1;
-        //private int thirdBowlBonusScore = -1;
-        //private bool isFrameClosed = false;
-        //private bool isFrameReadyForScore = false;
-
         private readonly int maxFramesNumber = CommonGameData.MaxFramesNumber;
 
         public FrameStatus FrameStatus;
 
         public int FirstBowlScore { get; private set; } = -1;
-        //public int FirstBowlScore 
-        //{
-        //    get => firstBowlScore; 
-        //    set => this.firstBowlScore = value;
-        //}
-
         public int SecondBowlScore { get; private set; } = -1;
-        //public int SecondBowlScore
-        //{
-        //    get => secondBowlScore;
-        //    private set => this.secondBowlScore = value;
-        //}
-
         public int ThirdBowlBonusScore { get; private set; } = -1;
-        //public int ThirdBowlBonusScore
-        //{
-        //    get => thirdBowlBonusScore;
-        //    set => this.thirdBowlBonusScore = value;
-        //}
 
         public bool IsFrameClose { get; private set; } = false;
         public bool IsFrameRedyForScore { get; private set; } = false;
@@ -87,7 +63,7 @@ namespace TenPinsBowlingGameHdcp
             }
         }
 
-        private void KickedPinsInputValidator(int kickedPinsCount)
+        private void ValidateKickedPinsInput(int kickedPinsCount)
         {
 
         }
@@ -101,6 +77,13 @@ namespace TenPinsBowlingGameHdcp
         public void SetIsFrameReadyForScore(bool isSet)
         {
             IsFrameRedyForScore = isSet;
+        }
+
+        public void SetBonusStatusForFinalFrame(Frame frame)
+        {
+            if (frame == null)
+                throw new ArgumentNullException("The Frame is Null. Pls check.");
+            frame.FrameStatus = FrameStatus.TenthFrameWithBonus;
         }
     }
 }
