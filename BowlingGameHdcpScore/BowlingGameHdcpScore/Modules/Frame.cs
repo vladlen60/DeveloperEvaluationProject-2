@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using TenPinsBowlingGameHdcp.Common;
 
-namespace TenPinsBowlingGameHdcp
+namespace TenPinsBowlingGameHdcp.Modules
 {
     public enum FrameStatus
     {
@@ -18,8 +13,7 @@ namespace TenPinsBowlingGameHdcp
 
     public class Frame
     {
-        private readonly int _maxFramesNumber = CommonGameData.MaxFramesNumber;
-        private readonly int _startingPinsNumber = CommonGameData.StartingPinsNumber;
+        private readonly int _startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
 
         public FrameStatus FrameStatus { get; private set; }
 
@@ -28,7 +22,7 @@ namespace TenPinsBowlingGameHdcp
         public int ThirdBowlBonusScore { get; private set; } = -1;
 
         public bool IsFrameClose { get; private set; } = false;
-        public bool IsFrameRedyForScore { get; private set; } = false;
+        public bool IsFrameReadyForScore { get; private set; } = false;
         public bool IsFinalFrame { get; private set; } = false;
 
 
@@ -36,37 +30,25 @@ namespace TenPinsBowlingGameHdcp
         public void SetFirstBowlScore(int kickedPinsCount)
         {
             if (kickedPinsCount >= 0 && kickedPinsCount <= _startingPinsNumber)
-            {
                 FirstBowlScore = kickedPinsCount;
-            }
             else
-            {
-                throw new ArgumentException($"The kicked pins count for 1st throw is '{kickedPinsCount}', but has to be between 0 and {_maxFramesNumber}.");
-            }
+                throw new ArgumentException($"The kicked pins count for 1st throw is '{kickedPinsCount}', but has to be between 0 and {_startingPinsNumber}.");
         }
 
         public void SetSecondBowlScore(int kickedPinsCount)
         {
             if (kickedPinsCount >= 0 && kickedPinsCount <= _startingPinsNumber)
-            {
                 SecondBowlScore = kickedPinsCount;
-            }
             else
-            {
-                throw new ArgumentException($"The kicked pins count for 2nd throw is '{kickedPinsCount}', but has to be between 0 and {_maxFramesNumber}.");
-            }
+                throw new ArgumentException($"The kicked pins count for 2nd throw is '{kickedPinsCount}', but has to be between 0 and {_startingPinsNumber}.");
         }
 
         public void SetThirdBowlBonusScore(int kickedPinsCount)
         {
             if (kickedPinsCount >= 0 && kickedPinsCount <= _startingPinsNumber)
-            {
                 ThirdBowlBonusScore = kickedPinsCount;
-            }
             else
-            {
-                throw new ArgumentException($"The kicked pins count for 3rd (Bonus) throw is '{kickedPinsCount}', but has to be between 0 and {_maxFramesNumber}.");
-            }
+                throw new ArgumentException($"The kicked pins count for 3rd (Bonus) throw is '{kickedPinsCount}', but has to be between 0 and {_startingPinsNumber}.");
         }
 
         public void SetIsFrameClosed(bool isSet)
@@ -76,7 +58,7 @@ namespace TenPinsBowlingGameHdcp
 
         public void SetIsFrameReadyForScore(bool isSet)
         {
-            IsFrameRedyForScore = isSet;
+            IsFrameReadyForScore = isSet;
         }
 
         public void SetIsFinalFrame(bool isSet)
@@ -84,7 +66,7 @@ namespace TenPinsBowlingGameHdcp
             IsFinalFrame = isSet;
         }
 
-        public void SetStatusForCurrentFrame(FrameStatus frameStatus)
+        public void SetFrameStatus(FrameStatus frameStatus)
         {
             if (frameStatus == null)
                 throw new ArgumentNullException("The FrameStatus provided, is Null. Pls check.");

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TenPinsBowlingGameHdcp.Utilities
 {
-    public class GameUtilities
+    public class GameParser
     {
         public List<int> ParseGameInputString(string gameInput)
         {
