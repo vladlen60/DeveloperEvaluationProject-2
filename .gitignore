@@ -348,9 +348,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-HdcpScore/HdcpScore/Class1.cs
-HdcpScore/HdcpScore/FrameIndexer.cs
-BowlingGameHdcpScore/TEMP_Prj_Holder/*
-BowlingGameHdcpScore/TEMP_Prj_Holder/Class1.cs
-BowlingGameHdcpScore/TEMP_Prj_Holder/Properties/AssemblyInfo.cs
-BowlingGameHdcpScore/TEMP_Prj_Holder/TEMP_Prj_Holder.csproj
+
