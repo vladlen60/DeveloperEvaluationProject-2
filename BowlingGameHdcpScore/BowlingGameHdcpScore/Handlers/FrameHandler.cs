@@ -1,11 +1,12 @@
 ﻿using System;
 using TenPinsBowlingGameHdcp.Common;
+using TenPinsBowlingGameHdcp.Modules;
 
 namespace TenPinsBowlingGameHdcp.Handlers
 {
-    public class FrameHamdler
+    public class FrameHandler
     {
-        private readonly int _defaultValueForBowlThrow = CommonGameData.DefaultValueForTheBowlThrow;
+        private readonly int _initialValueForBowlThrow = ConstTenPinsGameData.InitialValueForTheBowlThrow;
 
 
         public void SetFirstBowlForFrame(Frame frame, int kickedPins)
@@ -17,7 +18,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
         public void SetSecondBowlForFrame(Frame frame, int kickedPins)
         {
             ValidateForNull(frame);
-            if (frame.SecondBowlScore == _defaultValueForBowlThrow)
+            if (frame.SecondBowlScore == _initialValueForBowlThrow)
             {
                 frame.SetSecondBowlScore(kickedPins);
             }
@@ -26,7 +27,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
         public void SetThirdBowlForFrame(Frame frame, int kickedPins)
         {
             ValidateForNull(frame);
-            if (frame.ThirdBowlBonusScore == _defaultValueForBowlThrow)
+            if (frame.ThirdBowlBonusScore == _initialValueForBowlThrow)
             {
                 frame.SetThirdBowlBonusScore(kickedPins);
             }
@@ -35,7 +36,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
         public void SetIsReadyToScoreForFrameToTrue(Frame frame)
         {
             ValidateForNull(frame);
-            if (frame.ThirdBowlBonusScore != _defaultValueForBowlThrow)
+            if (frame.ThirdBowlBonusScore != _initialValueForBowlThrow)
             {
                 frame.SetIsFrameReadyForScore(true);
             }
@@ -47,11 +48,10 @@ namespace TenPinsBowlingGameHdcp.Handlers
             frame.SetIsFrameClosed(true);
         }
 
-        public void SetStatusForCurrentFrame(Frame frame, FrameStatus frameStatus)
+        public void SetStatusForFrame(Frame frame, FrameStatus frameStatus)
         {
             ValidateForNull(frame);
-            ValidateEnumValues(frameStatus);
-            frame.SetStatusForCurrentFrame(frameStatus);
+            frame.SetFrameStatus(frameStatus);
         }
 
         public void SetIsFinalFrameFlagToTrue(Frame frame)
@@ -66,13 +66,6 @@ namespace TenPinsBowlingGameHdcp.Handlers
         {
             if (frame == null)
                 throw new ArgumentNullException("The Frame is Null. Pls check.");
-        }
-
-        private void ValidateEnumValues(FrameStatus frameStatus)
-        {
-            bool correctValue = Enum.IsDefined(typeof(FrameStatus), frameStatus);
-            if (!correctValue)
-                throw new ArgumentNullException("The FrameStatus provided, is incorect. Pls check.");
         }
     }
 }

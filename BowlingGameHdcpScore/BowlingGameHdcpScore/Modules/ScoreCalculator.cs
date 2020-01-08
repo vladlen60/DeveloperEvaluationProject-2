@@ -1,5 +1,5 @@
 ﻿
-namespace TenPinsBowlingGameHdcp
+namespace TenPinsBowlingGameHdcp.Modules
 {
     public class ScoreCalculator
     {
@@ -8,7 +8,7 @@ namespace TenPinsBowlingGameHdcp
             var gameScore = 0;
             for (int countIndex = 0; countIndex <= currentFrameIndex; countIndex++)
             {
-                if (arrayOfCurrentFrames[countIndex].IsFrameRedyForScore)
+                if (arrayOfCurrentFrames[countIndex].IsFrameReadyForScore)
                     gameScore += arrayOfCurrentFrames[countIndex].FirstBowlScore +
                                  arrayOfCurrentFrames[countIndex].SecondBowlScore +
                                  arrayOfCurrentFrames[countIndex].ThirdBowlBonusScore;
