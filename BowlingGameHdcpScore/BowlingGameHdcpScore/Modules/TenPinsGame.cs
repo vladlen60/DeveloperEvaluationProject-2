@@ -22,12 +22,7 @@ namespace TenPinsBowlingGameHdcp.Modules
             (ArrayOfFrames[_currentFrameIndex].FrameStatus == FrameStatus.TenthFrameWithBonus) ? true : false;
 
 
-        /// <summary>
-        /// The name for this method 'Bowl(int)' was in the requirements.
-        /// But if the requirements are not firm on the name, then it can be changed to something like: "CalculateCurrentScoreForBowl(int)"
-        /// </summary>
-        /// <param name="kickedPins"></param>
-        /// <returns></returns>
+
         public int Bowl(int kickedPins)
         {
             int gameScore = 0;
@@ -37,16 +32,16 @@ namespace TenPinsBowlingGameHdcp.Modules
             if (_currentFrameIsNotSetYet)
             {
                 ArrayOfFrames[_currentFrameIndex] = new Frame();
-                OrchestrateFramesWithFirstThrowScore(kickedPins);
+                OrchestrateFramesBasedOnFirstThrowScore(kickedPins);
             }
             else
             {
-                OrchestrateFramesWithSecondThrowScore(kickedPins);
+                OrchestrateFramesBasedOnSecondThrowScore(kickedPins);
             }
 
             gameScore = ScoreCalculator.CalculateCurrentHdcpScoreFor(ArrayOfFrames, _currentFrameIndex);
 
-            SetFrameIndexForNoneFinalFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
+            _currentFrameIndex = UpdateFrameIndexWhileNotFinalFrame(ArrayOfFrames[_currentFrameIndex], kickedPins, _currentFrameIndex);
 
             return gameScore;
         }
@@ -55,7 +50,7 @@ namespace TenPinsBowlingGameHdcp.Modules
 
 
 
-        private void OrchestrateFramesWithFirstThrowScore(int kickedPins)
+        private void OrchestrateFramesBasedOnFirstThrowScore(int kickedPins)
         {
             int previousFrameIndex = _currentFrameIndex - 1;
             int beforeLastFrameIndex = _currentFrameIndex - 2;
@@ -74,7 +69,7 @@ namespace TenPinsBowlingGameHdcp.Modules
             _gameHandler.SetFrameClosedFlagIfStrike(ArrayOfFrames[_currentFrameIndex]);
         }
 
-        private void OrchestrateFramesWithSecondThrowScore(int kickedPins)
+        private void OrchestrateFramesBasedOnSecondThrowScore(int kickedPins)
         {
             int previousFrameIndex = _currentFrameIndex - 1;
 
@@ -99,18 +94,22 @@ namespace TenPinsBowlingGameHdcp.Modules
                 throw new ArgumentException("Sorry, you have played All available bowl-throws for this game. Pls start a new game.");
         }
 
-        private void SetFrameIndexForNoneFinalFrame(Frame currentFrame, int kickedPins)
+        private int UpdateFrameIndexWhileNotFinalFrame(Frame currentFrame, int kickedPins, int currentFrameIndex)
         {
             if (!currentFrame.IsFinalFrame)
-                SetFrameIndexBasedOnKickedPins(currentFrame, kickedPins);
+                currentFrameIndex = SetFrameIndexBasedOnKickedPins(currentFrame, kickedPins, currentFrameIndex);
+
+            return currentFrameIndex;
         }
 
-        private void SetFrameIndexBasedOnKickedPins(Frame currentFrame, int kickedPins)
+        private int SetFrameIndexBasedOnKickedPins(Frame currentFrame, int kickedPins, int currentFrameIndex)
         {
             if (kickedPins == _startingPinsNumber)
-                _currentFrameIndex++;
+                currentFrameIndex++;
             else if (currentFrame.IsFrameClose)
-                _currentFrameIndex++;
+                currentFrameIndex++;
+
+            return currentFrameIndex;
         }
     }
 }
