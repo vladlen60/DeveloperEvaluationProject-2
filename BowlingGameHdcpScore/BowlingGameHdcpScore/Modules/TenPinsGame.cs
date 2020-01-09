@@ -26,7 +26,7 @@ namespace TenPinsBowlingGameHdcp.Modules
         public int Bowl(int kickedPins)
         {
             int gameScore = 0;
-            ValidateKickedPinsInput(kickedPins);
+            ValidateGameInputOfKickedPins(kickedPins);
             ValidateIfNewThrowAllowedForFinalFrame(ArrayOfFrames[_currentFrameIndex]);
 
             if (_currentFrameIsNotSetYet)
@@ -41,7 +41,7 @@ namespace TenPinsBowlingGameHdcp.Modules
 
             gameScore = ScoreCalculator.CalculateCurrentHdcpScoreFor(ArrayOfFrames, _currentFrameIndex);
 
-            _currentFrameIndex = UpdateFrameIndexWhileNotFinalFrame(ArrayOfFrames[_currentFrameIndex], kickedPins, _currentFrameIndex);
+            _currentFrameIndex = UpdateFrameIndexWhileNotFinalFrame(ArrayOfFrames[_currentFrameIndex], _currentFrameIndex);
 
             return gameScore;
         }
@@ -82,7 +82,7 @@ namespace TenPinsBowlingGameHdcp.Modules
                 _gameHandler.SetPropertiesForCurrentFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
         }
 
-        private void ValidateKickedPinsInput(int kickedPins)
+        private void ValidateGameInputOfKickedPins(int kickedPins)
         {
             if (kickedPins < 0 || kickedPins > _startingPinsNumber)
                 throw new ArgumentException($"Sorry, your kickedPins '{kickedPins}' is out of allowed range 0-{_startingPinsNumber}. Pls check.");
@@ -94,17 +94,17 @@ namespace TenPinsBowlingGameHdcp.Modules
                 throw new ArgumentException("Sorry, you have played All available bowl-throws for this game. Pls start a new game.");
         }
 
-        private int UpdateFrameIndexWhileNotFinalFrame(Frame currentFrame, int kickedPins, int currentFrameIndex)
+        private int UpdateFrameIndexWhileNotFinalFrame(Frame currentFrame, int currentFrameIndex)
         {
             if (!currentFrame.IsFinalFrame)
-                currentFrameIndex = SetFrameIndexBasedOnKickedPins(currentFrame, kickedPins, currentFrameIndex);
+                currentFrameIndex = SetFrameIndexBasedOnKickedPins(currentFrame, currentFrameIndex);
 
             return currentFrameIndex;
         }
 
-        private int SetFrameIndexBasedOnKickedPins(Frame currentFrame, int kickedPins, int currentFrameIndex)
+        private int SetFrameIndexBasedOnKickedPins(Frame currentFrame, int currentFrameIndex)
         {
-            if (kickedPins == _startingPinsNumber)
+            if (currentFrame.FrameStatus == FrameStatus.Strike)
                 currentFrameIndex++;
             else if (currentFrame.IsFrameClose)
                 currentFrameIndex++;
