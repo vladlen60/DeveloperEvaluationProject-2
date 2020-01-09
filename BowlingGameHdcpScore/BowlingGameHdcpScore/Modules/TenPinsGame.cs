@@ -41,7 +41,7 @@ namespace TenPinsBowlingGameHdcp.Modules
 
             gameScore = ScoreCalculator.CalculateCurrentHdcpScoreFor(ArrayOfFrames, _currentFrameIndex);
 
-            _currentFrameIndex = UpdateFrameIndexWhileNotFinalFrame(ArrayOfFrames[_currentFrameIndex], _currentFrameIndex);
+            _currentFrameIndex = IncreaseFrameIndexWhileNotFinalFrame(ArrayOfFrames[_currentFrameIndex], _currentFrameIndex);
 
             return gameScore;
         }
@@ -94,19 +94,9 @@ namespace TenPinsBowlingGameHdcp.Modules
                 throw new ArgumentException("Sorry, you have played All available bowl-throws for this game. Pls start a new game.");
         }
 
-        private int UpdateFrameIndexWhileNotFinalFrame(Frame currentFrame, int currentFrameIndex)
+        private int IncreaseFrameIndexWhileNotFinalFrame(Frame currentFrame, int currentFrameIndex)
         {
-            if (!currentFrame.IsFinalFrame)
-                currentFrameIndex = SetFrameIndexBasedOnKickedPins(currentFrame, currentFrameIndex);
-
-            return currentFrameIndex;
-        }
-
-        private int SetFrameIndexBasedOnKickedPins(Frame currentFrame, int currentFrameIndex)
-        {
-            if (currentFrame.FrameStatus == FrameStatus.Strike)
-                currentFrameIndex++;
-            else if (currentFrame.IsFrameClose)
+            if (!currentFrame.IsFinalFrame && currentFrame.IsFrameClose)
                 currentFrameIndex++;
 
             return currentFrameIndex;
