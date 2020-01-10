@@ -15,7 +15,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
             _frameHandler.SetFirstBowlForFrame(currentFrame, kickedPins);
         }
 
-        internal void SetFinalFrameFlagIfApplicable(Frame currentFrame)
+        internal void SetFinalFrameFlagIfApplicableFor(Frame currentFrame)
         {
             _frameHandler.SetIsFinalFrameFlagToTrue(currentFrame);
         }
