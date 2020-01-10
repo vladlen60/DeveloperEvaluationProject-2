@@ -4,7 +4,7 @@ using TenPinsBowlingGameHdcp.Modules;
 
 namespace TenPinsBowlingGameHdcp.Handlers
 {
-    public class GameHandler
+    internal class GameHandler
     {
         private readonly int _startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
         private readonly FrameHandler _frameHandler = new FrameHandler();
@@ -20,7 +20,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
             _frameHandler.SetIsFinalFrameFlagToTrue(currentFrame);
         }
         
-        public virtual void SetPropertiesForCurrentFrame(Frame currentFrame, int kickedPins)
+        internal virtual void SetPropertiesForCurrentFrame(Frame currentFrame, int kickedPins)
         {
             ValidateFrameInputIsNotNull(currentFrame);
             ValidateSecondBowlValueForFrame(currentFrame, kickedPins);
@@ -30,7 +30,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
             _frameHandler.SetIsFrameClosedFlagToTrue(currentFrame);
         }
 
-        internal void SetStatusForCurrentFrame(Frame currentFrame)
+        internal virtual void SetStatusForCurrentFrame(Frame currentFrame)
         {
             ValidateFrameInputIsNotNull(currentFrame);
             if (currentFrame.FirstBowlScore == _startingPinsNumber)
