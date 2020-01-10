@@ -9,6 +9,7 @@ namespace TenPinsBowlingGameHdcp.Modules
         Frame[] ArrayOfFrames;
         private int _currentFrameIndex;
         private readonly int _maxFrameNumber;
+        private ScoreCalculator _scoreCalculator;
 
         
         public TenPinsGame() : base()
@@ -16,6 +17,7 @@ namespace TenPinsBowlingGameHdcp.Modules
             _currentFrameIndex = 0;
             _maxFrameNumber = ConstTenPinsGameData.MaxFramesNumber;
             ArrayOfFrames = new Frame[_maxFrameNumber];
+            _scoreCalculator = new ScoreCalculator();
         }
 
         public TenPinsGame(string gameInput) : base(gameInput)
@@ -23,6 +25,7 @@ namespace TenPinsBowlingGameHdcp.Modules
             _currentFrameIndex = 0;
             _maxFrameNumber = ConstTenPinsGameData.MaxFramesNumber;
             ArrayOfFrames = new Frame[_maxFrameNumber];
+            _scoreCalculator = new ScoreCalculator();
         }
 
         private bool _currentFrameIsNotSetYet => ArrayOfFrames[_currentFrameIndex] == null;
@@ -42,7 +45,7 @@ namespace TenPinsBowlingGameHdcp.Modules
                 OrchestrateFramesBasedOnSecondThrowScore(kickedPins);
             }
 
-            gameScore = ScoreCalculator.CalculateCurrentHdcpScoreFor(ArrayOfFrames, _currentFrameIndex);
+            gameScore = _scoreCalculator.CalculateCurrentHdcpScoreFor(ArrayOfFrames, _currentFrameIndex);
 
             _currentFrameIndex = IncreaseFrameIndexWhileNotFinalFrame(ArrayOfFrames[_currentFrameIndex], _currentFrameIndex);
 

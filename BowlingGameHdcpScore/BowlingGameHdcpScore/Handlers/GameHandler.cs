@@ -10,17 +10,17 @@ namespace TenPinsBowlingGameHdcp.Handlers
         private readonly FrameHandler _frameHandler = new FrameHandler();
 
 
-        public void SetFirstScoreForNewFrame(Frame currentFrame, int kickedPins)
+        internal void SetFirstScoreForNewFrame(Frame currentFrame, int kickedPins)
         {
             _frameHandler.SetFirstBowlForFrame(currentFrame, kickedPins);
         }
 
-        public void SetFinalFrameFlagIfApplicable(Frame currentFrame)
+        internal void SetFinalFrameFlagIfApplicable(Frame currentFrame)
         {
             _frameHandler.SetIsFinalFrameFlagToTrue(currentFrame);
         }
         
-        public void SetPropertiesForCurrentFrame(Frame currentFrame, int kickedPins)
+        public virtual void SetPropertiesForCurrentFrame(Frame currentFrame, int kickedPins)
         {
             ValidateFrameInputIsNotNull(currentFrame);
             ValidateSecondBowlValueForFrame(currentFrame, kickedPins);
@@ -30,7 +30,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
             _frameHandler.SetIsFrameClosedFlagToTrue(currentFrame);
         }
 
-        public void SetStatusForCurrentFrame(Frame currentFrame)
+        internal void SetStatusForCurrentFrame(Frame currentFrame)
         {
             ValidateFrameInputIsNotNull(currentFrame);
             if (currentFrame.FirstBowlScore == _startingPinsNumber)
@@ -51,7 +51,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
         }
 
 
-        public void SetFrameClosedFlagIfStrike(Frame currentFrame)
+        internal void SetFrameClosedFlagIfStrike(Frame currentFrame)
         {
             ValidateFrameInputIsNotNull(currentFrame);
             if (currentFrame.FirstBowlScore == _startingPinsNumber)
@@ -59,7 +59,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
         }
 
         private readonly int _initialValueForBowlThrow = ConstTenPinsGameData.InitialValueForTheBowlThrow;
-        public void SetDifferentPropertiesForFrame(Frame frame, int kickedPins)
+        internal void SetDifferentPropertiesForFrame(Frame frame, int kickedPins)
         {
             ValidateFrameInputIsNotNull(frame);
             if (frame.SecondBowlScore == _initialValueForBowlThrow)
