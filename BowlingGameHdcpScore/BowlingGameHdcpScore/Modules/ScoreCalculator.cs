@@ -1,7 +1,7 @@
 ﻿
 namespace TenPinsBowlingGameHdcp.Modules
 {
-    public class ScoreCalculator
+    internal class ScoreCalculator
     {
         public virtual int CalculateCurrentHdcpScoreFor(Frame[] arrayOfCurrentFrames, int currentFrameIndex)
         {

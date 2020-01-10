@@ -3,7 +3,7 @@ using TenPinsBowlingGameHdcp.Common;
 
 namespace TenPinsBowlingGameHdcp.Modules
 {
-    public enum FrameStatus
+    internal enum FrameStatus
     {
         Regular,
         Strike,
@@ -11,13 +11,13 @@ namespace TenPinsBowlingGameHdcp.Modules
         TenthFrameWithBonus
     }
 
-    public class Frame
+    internal class Frame
     {
         public FrameStatus FrameStatus { get; private set; }
 
-        public int FirstBowlScore { get; private set; } = -1;
-        public int SecondBowlScore { get; private set; } = -1;
-        public int ThirdBowlBonusScore { get; private set; } = -1;
+        public int FirstBowlScore { get; private set; } = ConstTenPinsGameData.InitialValueForTheBowlThrow;
+        public int SecondBowlScore { get; private set; } = ConstTenPinsGameData.InitialValueForTheBowlThrow;
+        public int ThirdBowlBonusScore { get; private set; } = ConstTenPinsGameData.InitialValueForTheBowlThrow;
 
         public bool IsFrameClose { get; private set; } = false;
         public bool IsFrameReadyForScore { get; private set; } = false;
