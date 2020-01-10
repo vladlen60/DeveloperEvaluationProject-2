@@ -10,7 +10,7 @@ using TenPinsBowlingGameHdcp.Utilities;
 namespace TenPinsBowlingGameHdcp.Tests
 {
     [TestClass]
-    public class BowlingGameHdcpScoreTest
+    public class TenPinsBowlingGameHdcpScoreTest
     {
         #region PossitiveTestCases
 
@@ -1291,7 +1291,7 @@ namespace TenPinsBowlingGameHdcp.Tests
 
 
 
-        #region DataDrivenTest
+        #region DataDrivenTest_With_DifferenConstructor
 
 
         [DataTestMethod]
@@ -1314,11 +1314,9 @@ namespace TenPinsBowlingGameHdcp.Tests
         public void should_calculate_score(string gameInput, int expectedScore, string reason)
         {
             int result = 0;
-            TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString(gameInput);
+            var game = new TenPinsGame(gameInput);
 
-            foreach (var input in intInputList)
+            foreach (var input in game.ListOfKickedPins)
             {
                 result = game.Bowl(input);
             }

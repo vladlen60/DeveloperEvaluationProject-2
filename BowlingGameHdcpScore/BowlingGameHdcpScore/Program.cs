@@ -7,15 +7,13 @@ namespace TenPinsBowlingGameHdcp
 {
     public class Program
     {
-        private static TenPinsGame tenPinsGame = new TenPinsGame();
-
         public static void Main(string[] args)
         {
-            List<int> inputList = new GameParser().ParseGameInputString("10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1");
+            TenPinsGame tenPinsGame = new TenPinsGame("10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1");
 
             int count = 1;
             int score = 0;
-            foreach (var input in inputList)
+            foreach (var input in tenPinsGame.ListOfKickedPins)
             {
                 score = tenPinsGame.Bowl(input);
                 Console.WriteLine($"Current Total Score of ALL Trows is ({count}): {score}");

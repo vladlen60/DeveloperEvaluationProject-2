@@ -6,12 +6,8 @@ namespace TenPinsBowlingGameHdcp.Handlers
 {
     public class GameHandler
     {
-        private readonly int _initialValueForBowlThrow = ConstTenPinsGameData.InitialValueForTheBowlThrow;
         private readonly int _startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
         private readonly FrameHandler _frameHandler = new FrameHandler();
-
-        private const int _thirdBowlForFrameWithoutBonus = 0;
-
 
 
         public void SetFirstScoreForNewFrame(Frame currentFrame, int kickedPins)
@@ -46,6 +42,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
                 _frameHandler.SetStatusForFrame(currentFrame, FrameStatus.TenthFrameWithBonus);
         }
 
+        private const int _thirdBowlForFrameWithoutBonus = ConstTenPinsGameData.ThirdBowlForFrameWithoutBonus;
         private void CompleteRegularFrame(Frame currentFrame)
         {
             ValidateFrameInputIsNotNull(currentFrame);
@@ -61,6 +58,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
                 _frameHandler.SetIsFrameClosedFlagToTrue(currentFrame);
         }
 
+        private readonly int _initialValueForBowlThrow = ConstTenPinsGameData.InitialValueForTheBowlThrow;
         public void SetDifferentPropertiesForFrame(Frame frame, int kickedPins)
         {
             ValidateFrameInputIsNotNull(frame);
