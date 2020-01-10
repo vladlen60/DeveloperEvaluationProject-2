@@ -20,6 +20,28 @@ namespace TenPinsBowlingGameHdcp
                 count++;
             }
 
+            string consoleInput;
+            TenPinsGame game = new TenPinsGame();
+            do
+            {
+                Console.WriteLine("Please Enter Kicked Pins count for the current Bowl or 'q' to quit:");
+                consoleInput = Console.ReadLine();
+                if (consoleInput == "q" || consoleInput == "Q")
+                    break;
+                try
+                {
+                    score = game.Bowl(Convert.ToInt32(consoleInput));
+                    if (score != 0)
+                        Console.WriteLine($"Your current score is: {score}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    //throw;
+                }
+
+            } while (consoleInput != "q");
+
             Console.WriteLine("Hit any key to Quit.");
             Console.ReadKey();
         }
