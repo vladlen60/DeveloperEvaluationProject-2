@@ -9,6 +9,7 @@ namespace TenPinsBowlingGameHdcp
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("-- The whole game input as one. --");
             TenPinsGame tenPinsGame = new TenPinsGame("10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1");
 
             int count = 1;
@@ -20,8 +21,11 @@ namespace TenPinsBowlingGameHdcp
                 count++;
             }
 
-            string consoleInput;
+            // =======
+
+            Console.WriteLine("-- New game to enter input one-by-one. --");
             TenPinsGame game = new TenPinsGame();
+            string consoleInput;
             do
             {
                 Console.WriteLine("Please Enter Kicked Pins count for the current Bowl or 'q' to quit:");
@@ -37,7 +41,6 @@ namespace TenPinsBowlingGameHdcp
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    //throw;
                 }
 
             } while (consoleInput != "q");
