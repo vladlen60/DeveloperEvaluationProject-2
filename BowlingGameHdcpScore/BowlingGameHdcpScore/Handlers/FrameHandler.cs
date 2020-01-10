@@ -4,18 +4,18 @@ using TenPinsBowlingGameHdcp.Modules;
 
 namespace TenPinsBowlingGameHdcp.Handlers
 {
-    public class FrameHandler
+    internal class FrameHandler
     {
         private readonly int _initialValueForBowlThrow = ConstTenPinsGameData.InitialValueForTheBowlThrow;
 
 
-        public void SetFirstBowlForFrame(Frame frame, int kickedPins)
+        internal void SetFirstBowlForFrame(Frame frame, int kickedPins)
         {
             ValidateForNull(frame);
             frame.SetFirstBowlScore(kickedPins);
         }
 
-        public void SetSecondBowlForFrame(Frame frame, int kickedPins)
+        internal void SetSecondBowlForFrame(Frame frame, int kickedPins)
         {
             ValidateForNull(frame);
             if (frame.SecondBowlScore == _initialValueForBowlThrow)
@@ -24,7 +24,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
             }
         }
 
-        public void SetThirdBowlForFrame(Frame frame, int kickedPins)
+        internal void SetThirdBowlForFrame(Frame frame, int kickedPins)
         {
             ValidateForNull(frame);
             if (frame.ThirdBowlBonusScore == _initialValueForBowlThrow)
@@ -33,7 +33,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
             }
         }
 
-        public void SetIsReadyToScoreForFrameToTrue(Frame frame)
+        internal void SetIsReadyToScoreForFrameToTrue(Frame frame)
         {
             ValidateForNull(frame);
             if (frame.ThirdBowlBonusScore != _initialValueForBowlThrow)
@@ -42,19 +42,19 @@ namespace TenPinsBowlingGameHdcp.Handlers
             }
         }
 
-        public void SetIsFrameClosedFlagToTrue(Frame frame)
+        internal void SetIsFrameClosedFlagToTrue(Frame frame)
         {
             ValidateForNull(frame);
             frame.SetIsFrameClosed(true);
         }
 
-        public void SetStatusForFrame(Frame frame, FrameStatus frameStatus)
+        internal void SetStatusForFrame(Frame frame, FrameStatus frameStatus)
         {
             ValidateForNull(frame);
             frame.SetFrameStatus(frameStatus);
         }
 
-        public void SetIsFinalFrameFlagToTrue(Frame frame)
+        internal void SetIsFinalFrameFlagToTrue(Frame frame)
         {
             ValidateForNull(frame);
             frame.SetIsFinalFrame(true);
