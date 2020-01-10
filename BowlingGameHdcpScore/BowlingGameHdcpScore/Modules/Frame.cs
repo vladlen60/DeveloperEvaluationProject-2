@@ -13,8 +13,6 @@ namespace TenPinsBowlingGameHdcp.Modules
 
     public class Frame
     {
-        private readonly int _startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
-
         public FrameStatus FrameStatus { get; private set; }
 
         public int FirstBowlScore { get; private set; } = -1;
@@ -26,6 +24,7 @@ namespace TenPinsBowlingGameHdcp.Modules
         public bool IsFinalFrame { get; private set; } = false;
 
 
+        private readonly int _startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
 
         public void SetFirstBowlScore(int kickedPinsCount)
         {

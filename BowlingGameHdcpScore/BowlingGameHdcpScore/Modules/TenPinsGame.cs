@@ -4,30 +4,33 @@ using TenPinsBowlingGameHdcp.Handlers;
 
 namespace TenPinsBowlingGameHdcp.Modules
 {
-    public class TenPinsGame
+    public class TenPinsGame : GameBase
     {
-        Frame[] ArrayOfFrames = new Frame[_maxFrameNumber];
-        private int _currentFrameIndex = 0;
+        Frame[] ArrayOfFrames;
+        private int _currentFrameIndex;
+        private readonly int _maxFrameNumber;
 
-        private const int _maxFrameNumber = ConstTenPinsGameData.MaxFramesNumber;
-        private readonly int _startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
-        private readonly int _finalFrameIndex = _maxFrameNumber - 1;
-        private readonly GameHandler _gameHandler = new GameHandler();
+        
+        public TenPinsGame() : base()
+        {
+            _currentFrameIndex = 0;
+            _maxFrameNumber = ConstTenPinsGameData.MaxFramesNumber;
+            ArrayOfFrames = new Frame[_maxFrameNumber];
+        }
+
+        public TenPinsGame(string gameInput) : base(gameInput)
+        {
+            _currentFrameIndex = 0;
+            _maxFrameNumber = ConstTenPinsGameData.MaxFramesNumber;
+            ArrayOfFrames = new Frame[_maxFrameNumber];
+        }
 
         private bool _currentFrameIsNotSetYet => ArrayOfFrames[_currentFrameIndex] == null;
-        private bool _isFinalFrame => _currentFrameIndex == _finalFrameIndex;
-        private bool _frameBeforeLastIsAvailable => (_currentFrameIndex > 1) ? true : false;
-        private bool _previousFrameIsAvailable => (_currentFrameIndex > 0) ? true : false;
-        private bool _isCurrentFrameFinalWithBonus =>
-            (ArrayOfFrames[_currentFrameIndex].FrameStatus == FrameStatus.TenthFrameWithBonus) ? true : false;
-
-
-
         public int Bowl(int kickedPins)
         {
             int gameScore = 0;
             ValidateGameInputOfKickedPins(kickedPins);
-            ValidateIfNewThrowAllowedForFinalFrame(ArrayOfFrames[_currentFrameIndex]);
+            ValidateIfNewBowlAllowedForFinalFrame(ArrayOfFrames[_currentFrameIndex]);
 
             if (_currentFrameIsNotSetYet)
             {
@@ -48,6 +51,11 @@ namespace TenPinsBowlingGameHdcp.Modules
 
 
 
+        private readonly int _finalFrameIndex = ConstTenPinsGameData.FinalFrameIndex;
+        private bool _isFinalFrame => _currentFrameIndex == _finalFrameIndex;
+        private bool _frameBeforeLastIsAvailable => (_currentFrameIndex > 1) ? true : false;
+        private bool _previousFrameIsAvailable => (_currentFrameIndex > 0) ? true : false;
+        private readonly GameHandler _gameHandler = new GameHandler();
 
 
         private void OrchestrateFramesBasedOnFirstThrowScore(int kickedPins)
@@ -69,6 +77,9 @@ namespace TenPinsBowlingGameHdcp.Modules
             _gameHandler.SetFrameClosedFlagIfStrike(ArrayOfFrames[_currentFrameIndex]);
         }
 
+        private bool _isCurrentFrameFinalWithBonus =>
+            (ArrayOfFrames[_currentFrameIndex].FrameStatus == FrameStatus.TenthFrameWithBonus) ? true : false;
+
         private void OrchestrateFramesBasedOnSecondThrowScore(int kickedPins)
         {
             int previousFrameIndex = _currentFrameIndex - 1;
@@ -82,13 +93,15 @@ namespace TenPinsBowlingGameHdcp.Modules
                 _gameHandler.SetPropertiesForCurrentFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
         }
 
+        private readonly int _startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
+
         private void ValidateGameInputOfKickedPins(int kickedPins)
         {
             if (kickedPins < 0 || kickedPins > _startingPinsNumber)
                 throw new ArgumentException($"Sorry, your kickedPins '{kickedPins}' is out of allowed range 0-{_startingPinsNumber}. Pls check.");
         }
 
-        private void ValidateIfNewThrowAllowedForFinalFrame(Frame currentFrame)
+        private void ValidateIfNewBowlAllowedForFinalFrame(Frame currentFrame)
         {
             if (currentFrame != null && currentFrame.IsFinalFrame && currentFrame.IsFrameReadyForScore)
                 throw new ArgumentException("Sorry, you have played All available bowl-throws for this game. Pls start a new game.");
