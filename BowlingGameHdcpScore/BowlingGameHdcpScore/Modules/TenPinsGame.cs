@@ -29,7 +29,7 @@ namespace TenPinsBowlingGameHdcp.Modules
         }
 
         private bool _currentFrameIsNotSetYet => ArrayOfFrames[_currentFrameIndex] == null;
-        public int Bowl(int kickedPins)
+        public override int Bowl(int kickedPins)
         {
             int gameScore = 0;
             ValidateGameInputOfKickedPins(kickedPins);
@@ -67,7 +67,7 @@ namespace TenPinsBowlingGameHdcp.Modules
             int beforeLastFrameIndex = _currentFrameIndex - 2;
 
             if (_isFinalFrame)
-                _gameHandler.SetFinalFrameFlagIfApplicable(ArrayOfFrames[_currentFrameIndex]);
+                _gameHandler.SetFinalFrameFlagIfApplicableFor(ArrayOfFrames[_currentFrameIndex]);
 
             _gameHandler.SetFirstScoreForNewFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
 

@@ -1283,10 +1283,85 @@ namespace TenPinsBowlingGameHdcp.Tests
             Assert.Fail("Call did NOT throw the Argument Exception");
         }
 
-        
+
+
+        [TestMethod]
+        public void TestFailed_OnGame_With_Negative_Value()
+        {
+            //-- Arrange
+            TenPinsGame game = new TenPinsGame("0,-1, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0");
+
+            //-- Act
+            try
+            {
+                foreach (var input in game.ListOfKickedPins)
+                {
+                    game.Bowl(input);
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual("Sorry, your kickedPins '-1' is out of allowed range 0-10. Pls check.", ex.Message);
+                return;
+            }
+
+            //-- Assert
+            Assert.Fail("Call did NOT throw the Argument Exception");
+        }
+
+
+        [TestMethod]
+        public void TestFailed_OnGame_With_Decimal_Value()
+        {
+            //-- Arrange
+
+            //-- Act
+            try
+            {
+                TenPinsGame game = new TenPinsGame("0,");
+                foreach (var input in game.ListOfKickedPins)
+                {
+                    game.Bowl(input);
+                }
+            }
+            catch (FormatException ex)
+            {
+                return;
+            }
+
+            //-- Assert
+            Assert.Fail("Call did NOT throw the Argument Exception");
+        }
+
+
+
+        [TestMethod]
+        public void TestFailed_OnGame_With_Empty_Value()
+        {
+            //-- Arrange
+
+            //-- Act
+            try
+            {
+                TenPinsGame game = new TenPinsGame("0,");
+                foreach (var input in game.ListOfKickedPins)
+                {
+                    game.Bowl(input);
+                }
+            }
+            catch (FormatException ex)
+            {
+                return;
+            }
+
+            //-- Assert
+            Assert.Fail("Call did NOT throw the Argument Exception");
+        }
+
+
         #endregion
 
-  
+
 
 
 

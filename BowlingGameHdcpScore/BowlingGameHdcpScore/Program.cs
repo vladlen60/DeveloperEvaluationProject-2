@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using TenPinsBowlingGameHdcp.Modules;
-using TenPinsBowlingGameHdcp.Utilities;
 
 namespace TenPinsBowlingGameHdcp
 {
