@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TenPinsBowlingGameHdcp.Utilities
 {
-    public class GameParser
+    internal class GameParser
     {
         public List<int> ParseGameInputString(string gameInput)
         {

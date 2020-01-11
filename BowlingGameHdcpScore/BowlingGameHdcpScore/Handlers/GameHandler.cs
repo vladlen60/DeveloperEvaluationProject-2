@@ -20,7 +20,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
             _frameHandler.SetIsFinalFrameFlagToTrue(currentFrame);
         }
         
-        internal virtual void SetPropertiesForCurrentFrame(Frame currentFrame, int kickedPins)
+        internal void SetPropertiesForCurrentFrame(Frame currentFrame, int kickedPins)
         {
             ValidateFrameInputIsNotNull(currentFrame);
             ValidateSecondBowlValueForFrame(currentFrame, kickedPins);
@@ -30,7 +30,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
             _frameHandler.SetIsFrameClosedFlagToTrue(currentFrame);
         }
 
-        internal virtual void SetStatusForCurrentFrame(Frame currentFrame)
+        internal void SetStatusForCurrentFrame(Frame currentFrame)
         {
             ValidateFrameInputIsNotNull(currentFrame);
             if (currentFrame.FirstBowlScore == _startingPinsNumber)
