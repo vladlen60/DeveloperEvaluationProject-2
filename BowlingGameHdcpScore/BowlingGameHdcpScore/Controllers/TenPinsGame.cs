@@ -29,6 +29,12 @@ namespace TenPinsBowlingGameHdcp.Modules
         }
 
         private bool _currentFrameIsNotSetYet => ArrayOfFrames[_currentFrameIndex] == null;
+        /// <summary>
+        /// Takes kicked-pins count for the current throw,
+        /// and returns the current score for all applicable frames for the game up until current throw
+        /// </summary>
+        /// <param name="kickedPins"></param>
+        /// <returns></returns>
         public override int Bowl(int kickedPins)
         {
             int gameScore = 0;

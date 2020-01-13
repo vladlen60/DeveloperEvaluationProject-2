@@ -979,7 +979,7 @@ namespace TenPinsBowlingGameHdcp.Tests
             }
             catch (ArgumentException ex)
             {
-                Assert.AreEqual($"The kicked pins count for 1st throw is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
+                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
                 return;
             }
 
@@ -1002,7 +1002,7 @@ namespace TenPinsBowlingGameHdcp.Tests
             }
             catch (ArgumentException ex)
             {
-                Assert.AreEqual($"The kicked pins count for 2nd throw is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
+                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
                 return;
             }
 
@@ -1025,7 +1025,7 @@ namespace TenPinsBowlingGameHdcp.Tests
             }
             catch (ArgumentException ex)
             {
-                Assert.AreEqual($"The kicked pins count for 3rd (Bonus) throw is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
+                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
                 return;
             }
 
@@ -1050,7 +1050,7 @@ namespace TenPinsBowlingGameHdcp.Tests
             }
             catch (ArgumentException ex)
             {
-                Assert.AreEqual($"The kicked pins count for 1st throw is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
+                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
                 return;
             }
 
@@ -1073,7 +1073,7 @@ namespace TenPinsBowlingGameHdcp.Tests
             }
             catch (ArgumentException ex)
             {
-                Assert.AreEqual($"The kicked pins count for 2nd throw is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
+                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
                 return;
             }
 
@@ -1096,7 +1096,7 @@ namespace TenPinsBowlingGameHdcp.Tests
             }
             catch (ArgumentException ex)
             {
-                Assert.AreEqual($"The kicked pins count for 3rd (Bonus) throw is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
+                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}.", ex.Message);
                 return;
             }
 
@@ -1289,7 +1289,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         public void TestFailed_OnGame_With_Negative_Value()
         {
             //-- Arrange
-            TenPinsGame game = new TenPinsGame("0,-1, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0");
+            TenPinsGame game = new TenPinsGame("0,-1, 0");
 
             //-- Act
             try
@@ -1318,7 +1318,7 @@ namespace TenPinsBowlingGameHdcp.Tests
             //-- Act
             try
             {
-                TenPinsGame game = new TenPinsGame("0,");
+                TenPinsGame game = new TenPinsGame("0,1.0,0");
                 foreach (var input in game.ListOfKickedPins)
                 {
                     game.Bowl(input);
