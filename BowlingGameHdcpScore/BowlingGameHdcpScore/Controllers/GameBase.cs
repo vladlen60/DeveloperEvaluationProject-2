@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TenPinsBowlingGameHdcp.Utilities;
 
-namespace TenPinsBowlingGameHdcp.Modules
+namespace TenPinsBowlingGameHdcp.Controllers
 {
     public abstract class GameBase
     {
