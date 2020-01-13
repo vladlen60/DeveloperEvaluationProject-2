@@ -28,26 +28,20 @@ namespace TenPinsBowlingGameHdcp.Modules
 
         public void SetFirstBowlScore(int kickedPinsCount)
         {
-            if (kickedPinsCount >= 0 && kickedPinsCount <= _startingPinsNumber)
-                FirstBowlScore = kickedPinsCount;
-            else
-                throw new ArgumentException($"The kicked pins count for 1st throw is '{kickedPinsCount}', but has to be between 0 and {_startingPinsNumber}.");
+            ValidateKickedPinsCount(kickedPinsCount);
+            FirstBowlScore = kickedPinsCount;
         }
 
         public void SetSecondBowlScore(int kickedPinsCount)
         {
-            if (kickedPinsCount >= 0 && kickedPinsCount <= _startingPinsNumber)
-                SecondBowlScore = kickedPinsCount;
-            else
-                throw new ArgumentException($"The kicked pins count for 2nd throw is '{kickedPinsCount}', but has to be between 0 and {_startingPinsNumber}.");
+            ValidateKickedPinsCount(kickedPinsCount);
+            SecondBowlScore = kickedPinsCount;
         }
 
         public void SetThirdBowlBonusScore(int kickedPinsCount)
         {
-            if (kickedPinsCount >= 0 && kickedPinsCount <= _startingPinsNumber)
-                ThirdBowlBonusScore = kickedPinsCount;
-            else
-                throw new ArgumentException($"The kicked pins count for 3rd (Bonus) throw is '{kickedPinsCount}', but has to be between 0 and {_startingPinsNumber}.");
+            ValidateKickedPinsCount(kickedPinsCount);
+            ThirdBowlBonusScore = kickedPinsCount;
         }
 
         public void SetIsFrameClosed(bool isSet)
@@ -70,6 +64,12 @@ namespace TenPinsBowlingGameHdcp.Modules
             if (frameStatus == null)
                 throw new ArgumentNullException("The FrameStatus provided, is Null. Pls check.");
             FrameStatus = frameStatus;
+        }
+
+        private void ValidateKickedPinsCount(int kickedPinsCount)
+        {
+            if (kickedPinsCount < 0 || kickedPinsCount > _startingPinsNumber)
+                throw new ArgumentException($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {_startingPinsNumber}.");
         }
     }
 }

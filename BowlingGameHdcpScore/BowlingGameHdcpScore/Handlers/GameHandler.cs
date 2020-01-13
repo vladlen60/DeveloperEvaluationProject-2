@@ -33,9 +33,9 @@ namespace TenPinsBowlingGameHdcp.Handlers
         internal void SetStatusForCurrentFrame(Frame currentFrame)
         {
             ValidateFrameInputIsNotNull(currentFrame);
-            if (currentFrame.FirstBowlScore == _startingPinsNumber)
+            if (IsFirstBowlStrikeFor(currentFrame))
                 _frameHandler.SetStatusForFrame(currentFrame, FrameStatus.Strike);
-            else if (currentFrame.FirstBowlScore + currentFrame.SecondBowlScore == _startingPinsNumber)
+            else if (IsSecondBowlSpareFor(currentFrame))
                 _frameHandler.SetStatusForFrame(currentFrame, FrameStatus.Spare);
             if (currentFrame.IsFinalFrame && (currentFrame.FrameStatus == FrameStatus.Strike ||
                                               currentFrame.FrameStatus == FrameStatus.Spare))
@@ -46,15 +46,15 @@ namespace TenPinsBowlingGameHdcp.Handlers
         private void CompleteRegularFrame(Frame currentFrame)
         {
             ValidateFrameInputIsNotNull(currentFrame);
-            if (currentFrame.FirstBowlScore + currentFrame.SecondBowlScore != _startingPinsNumber)
-                CompleteSettingPropertiesForFrame(currentFrame, _thirdBowlForFrameWithoutBonus);
+            if (!IsSecondBowlSpareFor(currentFrame))
+                FinishFrame(currentFrame, _thirdBowlForFrameWithoutBonus);
         }
 
 
         internal void SetFrameClosedFlagIfStrike(Frame currentFrame)
         {
             ValidateFrameInputIsNotNull(currentFrame);
-            if (currentFrame.FirstBowlScore == _startingPinsNumber)
+            if (IsFirstBowlStrikeFor(currentFrame))
                 _frameHandler.SetIsFrameClosedFlagToTrue(currentFrame);
         }
 
@@ -62,13 +62,13 @@ namespace TenPinsBowlingGameHdcp.Handlers
         internal void SetDifferentPropertiesForFrame(Frame frame, int kickedPins)
         {
             ValidateFrameInputIsNotNull(frame);
-            if (frame.SecondBowlScore == _initialValueForBowlThrow)
+            if (IsSecondBowlScoreNotRecordedFor(frame))
                 _frameHandler.SetSecondBowlForFrame(frame, kickedPins);
-            else if (frame.ThirdBowlBonusScore == _initialValueForBowlThrow)
-                CompleteSettingPropertiesForFrame(frame, kickedPins);
+            else if (IsThirdBowlScoreNotRecordedFor(frame))
+                FinishFrame(frame, kickedPins);
         }
 
-        private void CompleteSettingPropertiesForFrame(Frame frame, int kickedPins)
+        private void FinishFrame(Frame frame, int kickedPins)
         {
             _frameHandler.SetThirdBowlForFrame(frame, kickedPins);
             _frameHandler.SetIsReadyToScoreForFrameToTrue(frame);
@@ -84,6 +84,26 @@ namespace TenPinsBowlingGameHdcp.Handlers
         {
             if (frame == null)
                 throw new ArgumentNullException($"The Frame provided {frame} is Null. Pls check.");
+        }
+
+        private bool IsFirstBowlStrikeFor(Frame frame)
+        {
+            return frame.FirstBowlScore == _startingPinsNumber;
+        }
+
+        private bool IsSecondBowlSpareFor(Frame frame)
+        {
+            return frame.FirstBowlScore + frame.SecondBowlScore == _startingPinsNumber;
+        }
+        
+        private bool IsSecondBowlScoreNotRecordedFor(Frame frame)
+        {
+            return frame.SecondBowlScore == _initialValueForBowlThrow;
+        }
+
+        private bool IsThirdBowlScoreNotRecordedFor(Frame frame)
+        {
+            return (frame.ThirdBowlBonusScore == _initialValueForBowlThrow);
         }
     }
 }
