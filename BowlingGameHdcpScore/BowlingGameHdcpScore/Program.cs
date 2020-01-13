@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TenPinsBowlingGameHdcp.Modules;
+using TenPinsBowlingGameHdcp.Controllers;
 using TenPinsBowlingGameHdcp.Utilities;
 
 namespace TenPinsBowlingGameHdcp

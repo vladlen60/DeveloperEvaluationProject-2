@@ -1,24 +1,23 @@
 ﻿using System;
-using TenPinsBowlingGameHdcp.Common;
-using TenPinsBowlingGameHdcp.Modules;
+using TenPinsBowlingGameHdcp.Controllers;
+using TenPinsBowlingGameHdcp.Validators;
 
 namespace TenPinsBowlingGameHdcp.Handlers
 {
     internal class FrameHandler
     {
-        private readonly int _initialValueForBowlThrow = ConstTenPinsGameData.InitialValueForTheBowlThrow;
-
+        private CommonValidator _validator = new CommonValidator();
 
         internal void SetFirstBowlForFrame(Frame frame, int kickedPins)
         {
-            ValidateForNull(frame);
+            _validator.ValidateFrameIsNotNull(frame);
             frame.SetFirstBowlScore(kickedPins);
         }
 
         internal void SetSecondBowlForFrame(Frame frame, int kickedPins)
         {
-            ValidateForNull(frame);
-            if (IsSecondBowlScoreNotRecordedFor(frame))
+            _validator.ValidateFrameIsNotNull(frame);
+            if (_validator.IsSecondBowlScoreNotRecordedFor(frame))
             {
                 frame.SetSecondBowlScore(kickedPins);
             }
@@ -26,8 +25,8 @@ namespace TenPinsBowlingGameHdcp.Handlers
 
         internal void SetThirdBowlForFrame(Frame frame, int kickedPins)
         {
-            ValidateForNull(frame);
-            if (IsThirdBowlScoreNotRecordedFor(frame))
+            _validator.ValidateFrameIsNotNull(frame);
+            if (_validator.IsThirdBowlScoreNotRecordedFor(frame))
             {
                 frame.SetThirdBowlBonusScore(kickedPins);
             }
@@ -35,8 +34,8 @@ namespace TenPinsBowlingGameHdcp.Handlers
 
         internal void SetIsReadyToScoreForFrameToTrue(Frame frame)
         {
-            ValidateForNull(frame);
-            if (!IsThirdBowlScoreNotRecordedFor(frame))
+            _validator.ValidateFrameIsNotNull(frame);
+            if (!_validator.IsThirdBowlScoreNotRecordedFor(frame))
             {
                 frame.SetIsFrameReadyForScore(true);
             }
@@ -44,38 +43,20 @@ namespace TenPinsBowlingGameHdcp.Handlers
 
         internal void SetIsFrameClosedFlagToTrue(Frame frame)
         {
-            ValidateForNull(frame);
+            _validator.ValidateFrameIsNotNull(frame);
             frame.SetIsFrameClosed(true);
         }
 
         internal void SetStatusForFrame(Frame frame, FrameStatus frameStatus)
         {
-            ValidateForNull(frame);
+            _validator.ValidateFrameIsNotNull(frame);
             frame.SetFrameStatus(frameStatus);
         }
 
         internal void SetIsFinalFrameFlagToTrue(Frame frame)
         {
-            ValidateForNull(frame);
+            _validator.ValidateFrameIsNotNull(frame);
             frame.SetIsFinalFrame(true);
-        }
-
-
-
-        private void ValidateForNull(Frame frame)
-        {
-            if (frame == null)
-                throw new ArgumentNullException("The Frame is Null. Pls check.");
-        }
-
-        private bool IsSecondBowlScoreNotRecordedFor(Frame frame)
-        {
-            return frame.SecondBowlScore == _initialValueForBowlThrow;
-        }
-
-        private bool IsThirdBowlScoreNotRecordedFor(Frame frame)
-        {
-            return (frame.ThirdBowlBonusScore == _initialValueForBowlThrow);
         }
     }
 }

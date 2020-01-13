@@ -1,17 +1,19 @@
 ﻿using System;
 using TenPinsBowlingGameHdcp.Common;
 using TenPinsBowlingGameHdcp.Handlers;
+using TenPinsBowlingGameHdcp.Validators;
 
-namespace TenPinsBowlingGameHdcp.Modules
+namespace TenPinsBowlingGameHdcp.Controllers
 {
     public class TenPinsGame : GameBase
     {
-        Frame[] ArrayOfFrames;
+        private Frame[] ArrayOfFrames;
         private int _currentFrameIndex;
         private readonly int _maxFrameNumber;
         private ScoreCalculator _scoreCalculator;
+        private CommonValidator _validator = new CommonValidator();
 
-        
+
         public TenPinsGame() : base()
         {
             _currentFrameIndex = 0;
@@ -37,8 +39,8 @@ namespace TenPinsBowlingGameHdcp.Modules
         /// <returns></returns>
         public override int Bowl(int kickedPins)
         {
-            int gameScore = 0;
-            ValidateGameInputOfKickedPins(kickedPins);
+            int currentScoreForGame = 0;
+            _validator.ValidateKickedPinsCount(kickedPins);
             ValidateIfNewBowlAllowedForFinalFrame(ArrayOfFrames[_currentFrameIndex]);
 
             if (_currentFrameIsNotSetYet)
@@ -51,21 +53,19 @@ namespace TenPinsBowlingGameHdcp.Modules
                 OrchestrateFramesBasedOnSecondThrowScore(kickedPins);
             }
 
-            gameScore = _scoreCalculator.CalculateCurrentHdcpScoreFor(ArrayOfFrames, _currentFrameIndex);
+            currentScoreForGame = _scoreCalculator.CalculateCurrentHdcpScoreFor(ArrayOfFrames, _currentFrameIndex);
 
             _currentFrameIndex = IncreaseFrameIndexWhileNotFinalFrame(ArrayOfFrames[_currentFrameIndex], _currentFrameIndex);
 
-            return gameScore;
+            return currentScoreForGame;
         }
 
 
 
-        private readonly int _finalFrameIndex = ConstTenPinsGameData.FinalFrameIndex;
-        private bool _isFinalFrame => _currentFrameIndex == _finalFrameIndex;
-        private bool _frameBeforeLastIsAvailable => (_currentFrameIndex > 1) ? true : false;
-        private bool _previousFrameIsAvailable => (_currentFrameIndex > 0) ? true : false;
+        private bool _isFinalFrame => _currentFrameIndex == ConstTenPinsGameData.FinalFrameIndex;
+        private bool _isFrameBeforeLastAvailable => (_currentFrameIndex > 1) ? true : false;
+        private bool _isPreviousFrameAvailable => (_currentFrameIndex > 0) ? true : false;
         private readonly GameHandler _gameHandler = new GameHandler();
-
 
         private void OrchestrateFramesBasedOnFirstThrowScore(int kickedPins)
         {
@@ -77,9 +77,9 @@ namespace TenPinsBowlingGameHdcp.Modules
 
             _gameHandler.SetFirstScoreForNewFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
 
-            if (_frameBeforeLastIsAvailable)
+            if (_isFrameBeforeLastAvailable)
                 _gameHandler.SetDifferentPropertiesForFrame(ArrayOfFrames[beforeLastFrameIndex], kickedPins);
-            if (_previousFrameIsAvailable)
+            if (_isPreviousFrameAvailable)
                 _gameHandler.SetDifferentPropertiesForFrame(ArrayOfFrames[previousFrameIndex], kickedPins);
 
             _gameHandler.SetStatusForCurrentFrame(ArrayOfFrames[_currentFrameIndex]);
@@ -88,32 +88,17 @@ namespace TenPinsBowlingGameHdcp.Modules
 
         private bool _isCurrentFrameFinalWithBonus =>
             (ArrayOfFrames[_currentFrameIndex].FrameStatus == FrameStatus.TenthFrameWithBonus) ? true : false;
-
         private void OrchestrateFramesBasedOnSecondThrowScore(int kickedPins)
         {
             int previousFrameIndex = _currentFrameIndex - 1;
 
-            if (_previousFrameIsAvailable)
+            if (_isPreviousFrameAvailable)
                 _gameHandler.SetDifferentPropertiesForFrame(ArrayOfFrames[previousFrameIndex], kickedPins);
             
             if (_isCurrentFrameFinalWithBonus)
                 _gameHandler.SetDifferentPropertiesForFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
             else
                 _gameHandler.SetPropertiesForCurrentFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
-        }
-
-        private readonly int _startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
-
-        private void ValidateGameInputOfKickedPins(int kickedPins)
-        {
-            if (kickedPins < 0 || kickedPins > _startingPinsNumber)
-                throw new ArgumentException($"Sorry, your kickedPins '{kickedPins}' is out of allowed range 0-{_startingPinsNumber}. Pls check.");
-        }
-
-        private void ValidateIfNewBowlAllowedForFinalFrame(Frame currentFrame)
-        {
-            if (currentFrame != null && currentFrame.IsFinalFrame && currentFrame.IsFrameReadyForScore)
-                throw new ArgumentException("Sorry, you have played All available bowl-throws for this game. Pls start a new game.");
         }
 
         private int IncreaseFrameIndexWhileNotFinalFrame(Frame currentFrame, int currentFrameIndex)
@@ -123,5 +108,13 @@ namespace TenPinsBowlingGameHdcp.Modules
 
             return currentFrameIndex;
         }
+
+
+        private void ValidateIfNewBowlAllowedForFinalFrame(Frame currentFrame)
+        {
+            if (currentFrame != null && currentFrame.IsFinalFrame && currentFrame.IsFrameReadyForScore)
+                throw new ArgumentException("Sorry, you have played All available bowl-throws for this game. Pls start a new game.");
+        }
+
     }
 }

@@ -1,20 +1,14 @@
 ﻿using System;
 using TenPinsBowlingGameHdcp.Common;
+using TenPinsBowlingGameHdcp.Validators;
 
-namespace TenPinsBowlingGameHdcp.Modules
+namespace TenPinsBowlingGameHdcp.Controllers
 {
-    internal enum FrameStatus
-    {
-        Regular,
-        Strike,
-        Spare,
-        TenthFrameWithBonus
-    }
-
     internal class Frame
     {
-        public FrameStatus FrameStatus { get; private set; }
+        private CommonValidator _validator = new CommonValidator();
 
+        public FrameStatus FrameStatus { get; private set; }
         public int FirstBowlScore { get; private set; } = ConstTenPinsGameData.InitialValueForTheBowlThrow;
         public int SecondBowlScore { get; private set; } = ConstTenPinsGameData.InitialValueForTheBowlThrow;
         public int ThirdBowlBonusScore { get; private set; } = ConstTenPinsGameData.InitialValueForTheBowlThrow;
@@ -24,23 +18,21 @@ namespace TenPinsBowlingGameHdcp.Modules
         public bool IsFinalFrame { get; private set; } = false;
 
 
-        private readonly int _startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
-
         public void SetFirstBowlScore(int kickedPinsCount)
         {
-            ValidateKickedPinsCount(kickedPinsCount);
+            _validator.ValidateKickedPinsCount(kickedPinsCount);
             FirstBowlScore = kickedPinsCount;
         }
 
         public void SetSecondBowlScore(int kickedPinsCount)
         {
-            ValidateKickedPinsCount(kickedPinsCount);
+            _validator.ValidateKickedPinsCount(kickedPinsCount);
             SecondBowlScore = kickedPinsCount;
         }
 
         public void SetThirdBowlBonusScore(int kickedPinsCount)
         {
-            ValidateKickedPinsCount(kickedPinsCount);
+            _validator.ValidateKickedPinsCount(kickedPinsCount);
             ThirdBowlBonusScore = kickedPinsCount;
         }
 
@@ -64,12 +56,6 @@ namespace TenPinsBowlingGameHdcp.Modules
             if (frameStatus == null)
                 throw new ArgumentNullException("The FrameStatus provided, is Null. Pls check.");
             FrameStatus = frameStatus;
-        }
-
-        private void ValidateKickedPinsCount(int kickedPinsCount)
-        {
-            if (kickedPinsCount < 0 || kickedPinsCount > _startingPinsNumber)
-                throw new ArgumentException($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {_startingPinsNumber}.");
         }
     }
 }
