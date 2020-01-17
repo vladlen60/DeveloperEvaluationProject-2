@@ -1,5 +1,4 @@
-﻿using System;
-using TenPinsBowlingGameHdcp.Controllers;
+﻿using TenPinsBowlingGameHdcp.Controllers;
 using TenPinsBowlingGameHdcp.Validators;
 
 namespace TenPinsBowlingGameHdcp.Handlers
@@ -11,7 +10,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
         internal void SetFirstBowlForFrame(Frame frame, int kickedPins)
         {
             _validator.ValidateFrameIsNotNull(frame);
-            frame.SetFirstBowlScore(kickedPins);
+            frame.FirstBowlScore = kickedPins;
         }
 
         internal void SetSecondBowlForFrame(Frame frame, int kickedPins)
@@ -19,7 +18,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
             _validator.ValidateFrameIsNotNull(frame);
             if (_validator.IsSecondBowlScoreNotRecordedFor(frame))
             {
-                frame.SetSecondBowlScore(kickedPins);
+                frame.SecondBowlScore = kickedPins;
             }
         }
 
@@ -28,7 +27,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
             _validator.ValidateFrameIsNotNull(frame);
             if (_validator.IsThirdBowlScoreNotRecordedFor(frame))
             {
-                frame.SetThirdBowlBonusScore(kickedPins);
+                frame.ThirdBowlBonusScore = kickedPins;
             }
         }
 
