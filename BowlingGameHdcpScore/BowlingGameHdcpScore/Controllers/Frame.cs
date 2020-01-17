@@ -30,7 +30,11 @@ namespace TenPinsBowlingGameHdcp.Controllers
             }
             set
             {
-                _validator.ValidateKickedPinsCount(value);
+                if (!_validator.IsValidKickedPinsCount(value)) 
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                }
+
                 _firstBowlScore = value;
             }
         }
@@ -43,7 +47,11 @@ namespace TenPinsBowlingGameHdcp.Controllers
             }
             set
             {
-                _validator.ValidateKickedPinsCount(value);
+                if (!_validator.IsValidKickedPinsCount(value))
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                }
+
                 _secondBowlScore = value;
             }
         }
@@ -56,7 +64,11 @@ namespace TenPinsBowlingGameHdcp.Controllers
             }
             set
             {
-                _validator.ValidateKickedPinsCount(value);
+                if (!_validator.IsValidKickedPinsCount(value))
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                }
+
                 _thirdBowlBonusScore = value;
             }
         }

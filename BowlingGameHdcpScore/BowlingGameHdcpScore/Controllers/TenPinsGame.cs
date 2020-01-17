@@ -32,7 +32,11 @@ namespace TenPinsBowlingGameHdcp.Controllers
         public int Bowl(int kickedPins)
         {
             int currentScoreForGame = 0;
-            _validator.ValidateKickedPinsCount(kickedPins);
+            if (!_validator.IsValidKickedPinsCount(kickedPins))
+            {
+                throw new ArgumentException(nameof(kickedPins));
+            }
+
             ValidateIfNewBowlAllowedForFinalFrame(ArrayOfFrames[_currentFrameIndex]);
 
             if (_currentFrameIsNotSetYet)

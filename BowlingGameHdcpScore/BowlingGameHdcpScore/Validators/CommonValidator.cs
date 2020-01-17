@@ -22,10 +22,9 @@ namespace TenPinsBowlingGameHdcp.Validators
                 throw new ArgumentNullException($"The Frame provided {frame} is Null. Pls check.");
         }
 
-        internal void ValidateKickedPinsCount(int kickedPinsCount)
+        internal bool IsValidKickedPinsCount(int kickedPinsCount)
         {
-            if (kickedPinsCount < 0 || kickedPinsCount > ConstTenPinsGameData.StartingPinsNumber)
-                throw new ArgumentException($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {ConstTenPinsGameData.StartingPinsNumber}. Pls check.");
+            return kickedPinsCount >= 0 && kickedPinsCount <= ConstTenPinsGameData.StartingPinsNumber;
         }
     }
 }
