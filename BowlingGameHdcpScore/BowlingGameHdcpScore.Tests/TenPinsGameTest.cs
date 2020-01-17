@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TenPinsBowlingGameHdcp.Common;
-using TenPinsBowlingGameHdcp.Handlers;
 using TenPinsBowlingGameHdcp.Controllers;
 using TenPinsBowlingGameHdcp.Utilities;
 
 namespace TenPinsBowlingGameHdcp.Tests
 {
     [TestClass]
-    public class TenPinsBowlingGameHdcpScoreTest
+    public partial class TenPinsGameTest
     {
-        #region PossitiveTestCases
-
         [TestMethod]
         public void Test_Game_With_Single_Throw_NoBonuses_FrameIncomplete()
         {
@@ -610,146 +607,6 @@ namespace TenPinsBowlingGameHdcp.Tests
         }
         
         [TestMethod]
-        public void Test_Frame_SetFirstBowlThrow_Min()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            frame.SetFirstBowlScore(0);
-            var expected = 0;
-
-            //-- Act
-            var actual = frame.FirstBowlScore;
-
-            //-- Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Test_Frame_SetSecondBowlThrow()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            frame.SetSecondBowlScore(0);
-            var expected = 0;
-
-            //-- Act
-            var actual = frame.SecondBowlScore;
-
-            //-- Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Test_Frame_SetThirdBowlThrow()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            frame.SetThirdBowlBonusScore(0);
-            var expected = 0;
-
-            //-- Act
-            var actual = frame.ThirdBowlBonusScore;
-
-            //-- Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-
-
-        [TestMethod]
-        public void Test_Frame_SetFirstBowlThrow_Max()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            frame.SetFirstBowlScore(10);
-            var expected = 10;
-
-            //-- Act
-            var actual = frame.FirstBowlScore;
-
-            //-- Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Test_Frame_SetSecondBowlThrow_Max()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            frame.SetSecondBowlScore(10);
-            var expected = 10;
-
-            //-- Act
-            var actual = frame.SecondBowlScore;
-
-            //-- Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Test_Frame_SetThirdBowlThrow_Max()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            frame.SetThirdBowlBonusScore(10);
-            var expected = 10;
-
-            //-- Act
-            var actual = frame.ThirdBowlBonusScore;
-
-            //-- Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-
-
-        [TestMethod]
-        public void Test_Frame_SetFirstBowlThrow_Middle()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            frame.SetFirstBowlScore(5);
-            var expected = 5;
-
-            //-- Act
-            var actual = frame.FirstBowlScore;
-
-            //-- Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Test_Frame_SetSecondBowlThrow_Middle()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            frame.SetSecondBowlScore(5);
-            var expected = 5;
-
-            //-- Act
-            var actual = frame.SecondBowlScore;
-
-            //-- Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Test_Frame_SetThirdBowlThrow_Middle()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            frame.SetThirdBowlBonusScore(5);
-            var expected = 5;
-
-            //-- Act
-            var actual = frame.ThirdBowlBonusScore;
-
-            //-- Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        
-        [TestMethod]
         public void Test_Intermittent_Score_Till_RegularGameComplete_With_Bonuses()
         {
             //-- Arrange
@@ -768,17 +625,6 @@ namespace TenPinsBowlingGameHdcp.Tests
                 Assert.AreEqual(input.correspondingExpectedScore, actualScore);
             }
         }
-
-        #endregion
-
-
-
-        // ------------------------------------------------------------------------------
-
-
-
-
-        #region NegativeTestCases
 
         [TestMethod]
         public void TestsFailed_OnGame_With_Two_Throws_Sum_Higher_Than_StartingPins()
@@ -965,278 +811,6 @@ namespace TenPinsBowlingGameHdcp.Tests
         }
 
         [TestMethod]
-        public void TestFailed_Frame_SetFirstBowlThrow_OutOfRange()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            var kickedPinsCount = 11;
-            var startingPinsNumber = 10;
-            
-            //-- Act
-            try
-            {
-                frame.SetFirstBowlScore(kickedPinsCount);
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-        [TestMethod]
-        public void TestFailed_Frame_SetSecondBowlThrow_OutOfRange()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            var kickedPinsCount = 11;
-            var startingPinsNumber = 10;
-
-            //-- Act
-            try
-            {
-                frame.SetSecondBowlScore(kickedPinsCount);
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-        [TestMethod]
-        public void TestFailed_Frame_SetThirdBowlThrow_OutOfRange()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            var kickedPinsCount = 11;
-            var startingPinsNumber = 10;
-
-            //-- Act
-            try
-            {
-                frame.SetThirdBowlBonusScore(kickedPinsCount);
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-
-
-        [TestMethod]
-        public void TestFailed_Frame_SetFirstBowlThrow_OutOfRange_SubZero()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            var kickedPinsCount = -1;
-            var startingPinsNumber = 10;
-
-            //-- Act
-            try
-            {
-                frame.SetFirstBowlScore(kickedPinsCount);
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-        [TestMethod]
-        public void TestFailed_Frame_SetSecondBowlThrow_OutOfRange_SubZero()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            var kickedPinsCount = -1;
-            var startingPinsNumber = 10;
-
-            //-- Act
-            try
-            {
-                frame.SetSecondBowlScore(kickedPinsCount);
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-        [TestMethod]
-        public void TestFailed_Frame_SetThirdBowlThrow_OutOfRange_SubZero()
-        {
-            //-- Arrange
-            Frame frame = new Frame();
-            var kickedPinsCount = -1;
-            var startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
-
-            //-- Act
-            try
-            {
-                frame.SetThirdBowlBonusScore(kickedPinsCount);
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual($"The kicked pins count is '{kickedPinsCount}', but has to be between 0 and {startingPinsNumber}. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-        [TestMethod]
-        public void TestFailed_Game_Input_IntoParser_Null()
-        {
-            //-- Arrange
-            GameParser gameParser = new GameParser();
-
-            //-- Act
-            try
-            {
-                gameParser.ParseGameInputString(null);
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual("You have an invalid input ``. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-
-        [TestMethod]
-        public void TestFailed_Game_Input_IntoParser_Empty()
-        {
-            //-- Arrange
-            GameParser gameParser = new GameParser();
-
-            //-- Act
-            try
-            {
-                gameParser.ParseGameInputString("");
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual("You have an invalid input ``. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-
-
-
-        [TestMethod]
-        public void TestFailed_FrameHandler_SetFirstBowlForFrame_FrameIsNull()
-        {
-            //-- Arrange
-            FrameHandler frameHandler = new FrameHandler();
-            var kickedPinsCount = 1;
-
-            //-- Act
-            try
-            {
-                frameHandler.SetFirstBowlForFrame(null, kickedPinsCount);
-            }
-            catch (ArgumentNullException)
-            {
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-        [TestMethod]
-        public void TestFailed_FrameHandler_SetSecondBowlForFrame_FrameIsNull()
-        {
-            //-- Arrange
-            FrameHandler frameHandler = new FrameHandler();
-            var kickedPinsCount = 1;
-
-            //-- Act
-            try
-            {
-                frameHandler.SetSecondBowlForFrame(null, kickedPinsCount);
-            }
-            catch (ArgumentNullException)
-            {
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-        [TestMethod]
-        public void TestFailed_FrameHandler_SetThirdBowlForFrame_FrameIsNull()
-        {
-            //-- Arrange
-            FrameHandler frameHandler = new FrameHandler();
-            var kickedPinsCount = 1;
-
-            //-- Act
-            try
-            {
-                frameHandler.SetThirdBowlForFrame(null, kickedPinsCount);
-            }
-            catch (ArgumentNullException)
-            {
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-
-        [TestMethod]
-        public void TestFailed_GameHandler_SetPropertiesForCurrentFrame_FrameIsNull()
-        {
-            //-- Arrange
-            GameHandler gameHandler = new GameHandler();
-            var kickedPinsCount = 1;
-
-            //-- Act
-            try
-            {
-                gameHandler.SetPropertiesForCurrentFrame(null, kickedPinsCount);
-            }
-            catch (ArgumentNullException)
-            {
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-
-        [TestMethod]
         public void TestFailed_OnGame_KickedPinsInput_OutOfRange_SubZero()
         {
             //-- Arrange
@@ -1359,16 +933,6 @@ namespace TenPinsBowlingGameHdcp.Tests
         }
 
 
-        #endregion
-
-
-
-
-
-
-        #region DataDrivenTest_With_DifferenConstructor
-
-
         [DataTestMethod]
         [DataRow("10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1", 167, "cause the test under this says so")]
         [DataRow("10, 10,10,10,10,10,10,10,10,10,10,10", 300, "perfect game")]
@@ -1398,8 +962,5 @@ namespace TenPinsBowlingGameHdcp.Tests
 
             Assert.AreEqual(expectedScore, result, reason);
         }
-
-        #endregion
-
     }
 }

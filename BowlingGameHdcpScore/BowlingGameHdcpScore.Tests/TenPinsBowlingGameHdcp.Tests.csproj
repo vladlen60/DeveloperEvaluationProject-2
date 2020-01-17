@@ -50,7 +50,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TenPinsBowlingGameHdcpScoreTest.cs" />
+    <Compile Include="FrameHandlerTest.cs" />
+    <Compile Include="FrameTest.cs" />
+    <Compile Include="GameHandlerTest.cs" />
+    <Compile Include="GameParserTest.cs" />
+    <Compile Include="TenPinsGameTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
