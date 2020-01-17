@@ -53,8 +53,6 @@ namespace TenPinsBowlingGameHdcp.Controllers
 
         public void SetFrameStatus(FrameStatus frameStatus)
         {
-            if (frameStatus == null)
-                throw new ArgumentNullException("The FrameStatus provided, is Null. Pls check.");
             FrameStatus = frameStatus;
         }
     }

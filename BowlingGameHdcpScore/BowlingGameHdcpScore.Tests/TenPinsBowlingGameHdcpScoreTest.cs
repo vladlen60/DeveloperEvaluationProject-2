@@ -1324,7 +1324,7 @@ namespace TenPinsBowlingGameHdcp.Tests
                     game.Bowl(input);
                 }
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 return;
             }
@@ -1349,7 +1349,7 @@ namespace TenPinsBowlingGameHdcp.Tests
                     game.Bowl(input);
                 }
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 return;
             }
