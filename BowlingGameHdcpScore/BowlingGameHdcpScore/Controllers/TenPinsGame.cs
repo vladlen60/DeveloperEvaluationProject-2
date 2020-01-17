@@ -5,7 +5,7 @@ using TenPinsBowlingGameHdcp.Validators;
 
 namespace TenPinsBowlingGameHdcp.Controllers
 {
-    public class TenPinsGame : GameBase
+    public class TenPinsGame
     {
         private Frame[] ArrayOfFrames;
         private int _currentFrameIndex;
@@ -14,15 +14,7 @@ namespace TenPinsBowlingGameHdcp.Controllers
         private CommonValidator _validator = new CommonValidator();
 
 
-        public TenPinsGame() : base()
-        {
-            _currentFrameIndex = 0;
-            _maxFrameNumber = ConstTenPinsGameData.MaxFramesNumber;
-            ArrayOfFrames = new Frame[_maxFrameNumber];
-            _scoreCalculator = new ScoreCalculator();
-        }
-
-        public TenPinsGame(string gameInput) : base(gameInput)
+        public TenPinsGame()
         {
             _currentFrameIndex = 0;
             _maxFrameNumber = ConstTenPinsGameData.MaxFramesNumber;
@@ -37,7 +29,7 @@ namespace TenPinsBowlingGameHdcp.Controllers
         /// </summary>
         /// <param name="kickedPins"></param>
         /// <returns></returns>
-        public override int Bowl(int kickedPins)
+        public int Bowl(int kickedPins)
         {
             int currentScoreForGame = 0;
             _validator.ValidateKickedPinsCount(kickedPins);

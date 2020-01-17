@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using TenPinsBowlingGameHdcp.Controllers;
-using TenPinsBowlingGameHdcp.Utilities;
 
 namespace TenPinsBowlingGameHdcp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             Console.WriteLine("-- Option 1: The whole game input as one (using built-in parser). --");
-            TenPinsGame tenPinsGame = new TenPinsGame("10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1");
+            int[] bowledBalls = new[] { 10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1 };
 
             int count = 1;
-            int score = 0;
-            foreach (var input in tenPinsGame.ListOfKickedPins)
+            var tenPinsGame = new TenPinsGame();
+            int score;
+            foreach (var input in bowledBalls)
             {
                 score = tenPinsGame.Bowl(input);
                 Console.WriteLine($"Total Score till current Throw (#{count}) is: {score}");
@@ -23,15 +23,13 @@ namespace TenPinsBowlingGameHdcp
             // =======
 
             Console.WriteLine("-- Option 2: The whole game input as one (can use 3rd party parcer). --");
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1");
+            var intInputList = new[] { 10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1 };
 
             int count2 = 1;
-            int score2 = 0;
             TenPinsGame tenPinsGame2 = new TenPinsGame();
             foreach (var input in intInputList)
             {
-                score2 = tenPinsGame2.Bowl(input);
+                int score2 = tenPinsGame2.Bowl(input);
                 Console.WriteLine($"Total Score till current Throw (#{count2}) is: {score2}");
                 count2++;
             }

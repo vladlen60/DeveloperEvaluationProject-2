@@ -74,12 +74,10 @@
     <Compile Include="Controllers\FrameStatus.cs" />
     <Compile Include="Handlers\FrameHandler.cs" />
     <Compile Include="Handlers\GameHandler.cs" />
-    <Compile Include="Controllers\GameBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\ScoreCalculator.cs" />
     <Compile Include="Controllers\TenPinsGame.cs" />
-    <Compile Include="Utilities\GameParser.cs" />
     <Compile Include="Validators\CommonValidator.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TenPinsBowlingGameHdcp.Common;
 using TenPinsBowlingGameHdcp.Controllers;
-using TenPinsBowlingGameHdcp.Utilities;
 
 namespace TenPinsBowlingGameHdcp.Tests
 {
@@ -16,8 +14,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("1");
+            var intInputList = new [] { 1 };
             int expectedScore = 0;
             int actualScore = 0;
 
@@ -36,8 +33,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("1, 1");
+            var intInputList = new [] { 1, 1 };
             int expectedScore = 2;
             int actualScore = 0;
 
@@ -57,8 +53,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("1, 1,5");
+            var intInputList = new [] { 1, 1,5 };
             int expectedScore = 2;
             int actualScore = 0;
 
@@ -77,8 +72,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10");
+            
+            var intInputList = new [] { 10 };
             int expectedScore = 0;
             int actualScore = 0;
 
@@ -97,8 +92,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("1, 9");
+            
+            var intInputList = new [] { 1, 9 };
             int expectedScore = 0;
             int actualScore = 0;
 
@@ -117,8 +112,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10, 1");
+            
+            var intInputList = new [] { 10, 1 };
             int expectedScore = 0;
             int actualScore = 0;
 
@@ -137,8 +132,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("1, 9, 5");
+            
+            var intInputList = new [] { 1, 9, 5 };
             int expectedScore = 15;
             int actualScore = 0;
 
@@ -158,8 +153,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10, 1, 5");
+            
+            var intInputList = new [] { 10, 1, 5 };
             int expectedScore = 22;
             int actualScore = 0;
 
@@ -178,8 +173,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10, 10");
+            
+            var intInputList = new [] { 10, 10 };
             int expectedScore = 0;
             int actualScore = 0;
 
@@ -199,8 +194,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10, 10, 10");
+            
+            var intInputList = new [] { 10, 10, 10 };
             int expectedScore = 30;
             int actualScore = 0;
 
@@ -220,8 +215,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10, 10, 10, 0");
+            
+            var intInputList = new [] { 10, 10, 10, 0 };
             int expectedScore = 50;
             int actualScore = 0;
 
@@ -241,8 +236,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0 ");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0  };
             int expectedScore = 0;
             int actualScore = 0;
 
@@ -261,8 +256,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,1, 0,0, 0,0, 0,0, 0,0, 0,0 ");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,0, 0,1, 0,0, 0,0, 0,0, 0,0, 0,0  };
             int expectedScore = 1;
             int actualScore = 0;
 
@@ -282,8 +277,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 1,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0 ");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 1,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0  };
             int expectedScore = 1;
             int actualScore = 0;
 
@@ -303,8 +298,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,10, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0 ");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,10, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0  };
             int expectedScore = 10;
             int actualScore = 0;
 
@@ -324,8 +319,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,5 ");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,5  };
             int expectedScore = 5;
             int actualScore = 0;
 
@@ -345,8 +340,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,10, 1,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0 ");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,10, 1,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0  };
             int expectedScore = 12;
             int actualScore = 0;
 
@@ -365,8 +360,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,1, 0,2, 0,3, 0,4, 0,5, 0,6, 0,7, 0,8, 0,9, 0,10, 0 ");
+            
+            var intInputList = new [] { 0,1, 0,2, 0,3, 0,4, 0,5, 0,6, 0,7, 0,8, 0,9, 0,10, 0  };
             int expectedScore = 55;
             int actualScore = 0;
 
@@ -386,8 +381,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,10, 1");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,10, 1 };
             int expectedScore = 11;
             int actualScore = 0;
 
@@ -407,8 +402,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,10, 2");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,10, 2 };
             int expectedScore = 12;
             int actualScore = 0;
 
@@ -428,8 +423,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10, 0, 0");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10, 0, 0 };
             int expectedScore = 10;
             int actualScore = 0;
 
@@ -449,8 +444,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10, 1, 0");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10, 1, 0 };
             int expectedScore = 11;
             int actualScore = 0;
 
@@ -470,8 +465,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10, 0, 1");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10, 0, 1 };
             int expectedScore = 11;
             int actualScore = 0;
 
@@ -490,8 +485,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10, 2, 0");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10, 2, 0 };
             int expectedScore = 12;
             int actualScore = 0;
 
@@ -510,8 +505,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10, 1, 1");
+            
+            var intInputList = new [] { 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10, 1, 1 };
             int expectedScore = 12;
             int actualScore = 0;
 
@@ -530,8 +525,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10,10,10,10,10,10,10,10,10,10,10,10");
+            
+            var intInputList = new [] { 10,10,10,10,10,10,10,10,10,10,10,10 };
             int expectedScore = 300;
             int actualScore = 0;
 
@@ -544,14 +539,14 @@ namespace TenPinsBowlingGameHdcp.Tests
             //-- Assert
             Assert.AreEqual(expectedScore, actualScore);
         }
-        
+
         [TestMethod]
         public void Test_Game_Complete_With_Single_Miss_On_Every_Frame_NoBonuses()
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("9, 0, 9,0, 9,0,9, 0, 9, 0, 9, 0, 9,0 , 9,0, 9,0, 9,0");
+            
+            var intInputList = new [] { 9, 0, 9,0, 9,0,9, 0, 9, 0, 9, 0, 9,0 , 9,0, 9,0, 9,0 };
             int expectedScore = 90;
             int actualScore = 0;
 
@@ -564,14 +559,13 @@ namespace TenPinsBowlingGameHdcp.Tests
             //-- Assert
             Assert.AreEqual(expectedScore, actualScore);
         }
-        
+
         [TestMethod]
         public void Test_Almost_Perfect_Game_Complete_With_Spare_On_Every_Frame()
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5");
+            var intInputList = new [] { 5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5 };
             int expectedScore = 150;
             int actualScore = 0;
 
@@ -591,8 +585,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1");
+            var intInputList = new[] { 10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1 };
             int expectedScore = 167;
             int actualScore = 0;
 
@@ -605,15 +598,14 @@ namespace TenPinsBowlingGameHdcp.Tests
             //-- Assert
             Assert.AreEqual(expectedScore, actualScore);
         }
-        
+
         [TestMethod]
         public void Test_Intermittent_Score_Till_RegularGameComplete_With_Bonuses()
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1");
-            List<int> expectedScoresList = new List<int>{0,0,20,39,48,48,48,74,74,74,84,90,90,90,120,148,167};
+            var intInputList = new[] { 10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1 };
+            var expectedScoresList = new [] { 0, 0, 20, 39, 48, 48, 48, 74, 74, 74, 84, 90, 90, 90, 120, 148, 167 };
             var inputValuesAndExpectedScores = intInputList.Zip(expectedScoresList, (kickedPins, correspondingExpectedScore) => (kickedPins, correspondingExpectedScore));
             int actualScore = 0;
 
@@ -627,96 +619,28 @@ namespace TenPinsBowlingGameHdcp.Tests
         }
 
         [TestMethod]
-        public void TestsFailed_OnGame_With_Two_Throws_Sum_Higher_Than_StartingPins()
-        {
-            //-- Arrange
-            TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("9, 5");
-
-            //-- Act
-            try
-            {
-                foreach (var input in intInputList)
-                {
-                    game.Bowl(input);
-                }
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual("The 2nd throw pins of 5 is higher than allowed for this frame. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-
-        [TestMethod]
-        public void TestsFailed_OnGame_With_Strike_And_Next_Two_Throws_Higher_Than_StartingPins()
-        {
-            //-- Arrange
-            TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("10, 9, 5");
-
-            //-- Act
-            try
-            {
-                foreach (var input in intInputList)
-                {
-                    game.Bowl(input);
-                }
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual("The 2nd throw pins of 5 is higher than allowed for this frame. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-        [TestMethod]
-        public void TestsFailed_OnGame_With_Letter_Instead_Of_Integer()
-        {
-            //-- Arrange
-            TenPinsGame game = new TenPinsGame();
-
-            //-- Act
-            try
-            {
-                var input = "O";
-                game.Bowl(Convert.ToInt32(input));
-            }
-            catch (FormatException ex)
-            {
-                Assert.AreEqual("Input string was not in a correct format.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-
-        [TestMethod]
         public void TestFailed_OnGame_Complete_With_Last_Spare_And_Excessive_Bonuses()
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 3,7, 1, 2");
 
             //-- Act
             try
             {
-                foreach (var input in intInputList)
+                for (int i = 0; i < 9; i++)
                 {
-                    game.Bowl(input);
+                    //bowl 1 for each ball in a frame
+                    game.Bowl(1);
+                    game.Bowl(1);
                 }
+
+                //10th frame spare and bonus
+                game.Bowl(1);
+                game.Bowl(9);
+                game.Bowl(2);
+
+                //extra bonus
+                game.Bowl(1);
             }
             catch (ArgumentException ex)
             {
@@ -727,23 +651,24 @@ namespace TenPinsBowlingGameHdcp.Tests
             //-- Assert
             Assert.Fail("Call did NOT throw the Argument Exception");
         }
-
 
         [TestMethod]
         public void TestFailed_OnGame_Complete_With_No_Misses_And_Bonus()
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1");
 
             //-- Act
             try
             {
-                foreach (var input in intInputList)
+                for(int i = 0; i < 10; i++)
                 {
-                    game.Bowl(input);
+                    //bowl 1 for each ball in a frame
+                    game.Bowl(1);
+                    game.Bowl(1);
                 }
+
+                game.Bowl(2);
             }
             catch (ArgumentException ex)
             {
@@ -754,51 +679,18 @@ namespace TenPinsBowlingGameHdcp.Tests
             //-- Assert
             Assert.Fail("Call did NOT throw the Argument Exception");
         }
-
-
-        [TestMethod]
-        public void TestFailed_OnGame_Complete_With_No_Misses_And_Two_Bonuses()
-        {
-            //-- Arrange
-            TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1, 2");
-
-            //-- Act
-            try
-            {
-                foreach (var input in intInputList)
-                {
-                    game.Bowl(input);
-                }
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual("Sorry, you have played All available bowl-throws for this game. Pls start a new game.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-
 
         [TestMethod]
         public void TestFailed_OnGame_Complete_With_No_Misses_But_OutOfRange_Throws_Sum()
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
-            GameParser gameParser = new GameParser();
-            List<int> intInputList = gameParser.ParseGameInputString("6,6, 6,6, 6,6, 6,6, 6,6, 6,6, 6,6, 6,6, 6,6, 6,6");
-
+            
             //-- Act
             try
             {
-                foreach (var input in intInputList)
-                {
-                    game.Bowl(input);
-                }
+                game.Bowl(6);
+                game.Bowl(6);
             }
             catch (ArgumentException ex)
             {
@@ -863,15 +755,12 @@ namespace TenPinsBowlingGameHdcp.Tests
         public void TestFailed_OnGame_With_Negative_Value()
         {
             //-- Arrange
-            TenPinsGame game = new TenPinsGame("0,-1, 0");
+            TenPinsGame game = new TenPinsGame();
 
             //-- Act
             try
             {
-                foreach (var input in game.ListOfKickedPins)
-                {
-                    game.Bowl(input);
-                }
+                game.Bowl(-1);
             }
             catch (ArgumentException ex)
             {
@@ -883,58 +772,8 @@ namespace TenPinsBowlingGameHdcp.Tests
             Assert.Fail("Call did NOT throw the Argument Exception");
         }
 
-
-        [TestMethod]
-        public void TestFailed_OnGame_With_Decimal_Value()
-        {
-            //-- Arrange
-
-            //-- Act
-            try
-            {
-                TenPinsGame game = new TenPinsGame("0,1.0,0");
-                foreach (var input in game.ListOfKickedPins)
-                {
-                    game.Bowl(input);
-                }
-            }
-            catch (FormatException)
-            {
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-
-
-        [TestMethod]
-        public void TestFailed_OnGame_With_Empty_Value()
-        {
-            //-- Arrange
-
-            //-- Act
-            try
-            {
-                TenPinsGame game = new TenPinsGame("0,");
-                foreach (var input in game.ListOfKickedPins)
-                {
-                    game.Bowl(input);
-                }
-            }
-            catch (FormatException)
-            {
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
-
-
         [DataTestMethod]
-        [DataRow("10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1", 167, "cause the test under this says so")]
+        [DataRow("10, 7,3, 9,0, 10, 0,8, 8,2, 0,6, 10, 10, 10, 8, 1", 167, "cause the test under this says so")]
         [DataRow("10, 10,10,10,10,10,10,10,10,10,10,10", 300, "perfect game")]
         [DataRow("0,0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0, 0,0 ", 0, "gutter city")]
         [DataRow("0,0, 0,0, 0,0, 0,0, 0,1, 0,0, 0,0,0, 0,0, 0, 0,0 ", 1, "a measly one")]
@@ -953,9 +792,11 @@ namespace TenPinsBowlingGameHdcp.Tests
         public void should_calculate_score(string gameInput, int expectedScore, string reason)
         {
             int result = 0;
-            var game = new TenPinsGame(gameInput);
+            var game = new TenPinsGame();
 
-            foreach (var input in game.ListOfKickedPins)
+            var bowls = gameInput.Split(',').Select(s => Convert.ToInt32(s));
+
+            foreach (var input in bowls)
             {
                 result = game.Bowl(input);
             }
