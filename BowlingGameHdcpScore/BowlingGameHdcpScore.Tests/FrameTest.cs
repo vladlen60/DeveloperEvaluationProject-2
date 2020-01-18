@@ -61,5 +61,44 @@ namespace TenPinsBowlingGameHdcp.Tests
 
             frame.IsFinalFrame.Should().BeFalse();
         }
+
+        [TestMethod]
+        public void Frame_With_No_Bowls_Is_Not_Closed()
+        {
+            var frame = new Frame();
+
+            frame.IsFrameClose.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Frame_With_One_Bowl_Should_Be_Open()
+        {
+            var frame = new Frame();
+
+            frame.FirstBowlScore = 0;
+
+            frame.IsFrameClose.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Frame_With_Two_Bowls_Should_Be_Closed()
+        {
+            var frame = new Frame();
+
+            frame.FirstBowlScore = 0;
+            frame.SecondBowlScore = 0;
+
+            frame.IsFrameClose.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Frame_With_Strike_Should_Be_Closed()
+        {
+            var frame = new Frame();
+
+            frame.FirstBowlScore = 10;
+
+            frame.IsFrameClose.Should().BeTrue();
+        }
     }
 }

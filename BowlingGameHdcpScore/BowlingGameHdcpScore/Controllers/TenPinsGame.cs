@@ -76,7 +76,6 @@ namespace TenPinsBowlingGameHdcp.Controllers
                 _gameHandler.SetDifferentPropertiesForFrame(ArrayOfFrames[previousFrameIndex], kickedPins);
 
             _gameHandler.SetStatusForCurrentFrame(ArrayOfFrames[_currentFrameIndex]);
-            _gameHandler.SetFrameClosedFlagIfStrike(ArrayOfFrames[_currentFrameIndex]);
         }
 
         private bool _isCurrentFrameFinalWithBonus =>

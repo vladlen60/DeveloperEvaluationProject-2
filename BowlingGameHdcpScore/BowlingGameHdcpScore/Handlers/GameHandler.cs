@@ -14,17 +14,16 @@ namespace TenPinsBowlingGameHdcp.Handlers
 
         internal void SetFirstScoreForNewFrame(Frame currentFrame, int kickedPins)
         {
-            _frameHandler.SetFirstBowlForFrame(currentFrame, kickedPins);
+            currentFrame.FirstBowlScore = kickedPins;
         }
         
         internal void SetPropertiesForCurrentFrame(Frame currentFrame, int kickedPins)
         {
             _validator.ValidateFrameIsNotNull(currentFrame);
             ValidateSecondBowlValueForFrame(currentFrame, kickedPins);
-            _frameHandler.SetSecondBowlForFrame(currentFrame, kickedPins);
+            currentFrame.SecondBowlScore = kickedPins;
             SetStatusForCurrentFrame(currentFrame);
             CompleteRegularFrame(currentFrame);
-            _frameHandler.SetIsFrameClosedFlagToTrue(currentFrame);
         }
 
         internal void SetStatusForCurrentFrame(Frame currentFrame)
@@ -46,19 +45,11 @@ namespace TenPinsBowlingGameHdcp.Handlers
                 FinishFrame(currentFrame, ConstTenPinsGameData.ThirdBowlForFrameWithoutBonus);
         }
 
-
-        internal void SetFrameClosedFlagIfStrike(Frame currentFrame)
-        {
-            _validator.ValidateFrameIsNotNull(currentFrame);
-            if (IsFirstBowlStrikeFor(currentFrame))
-                _frameHandler.SetIsFrameClosedFlagToTrue(currentFrame);
-        }
-
         internal void SetDifferentPropertiesForFrame(Frame frame, int kickedPins)
         {
             _validator.ValidateFrameIsNotNull(frame);
             if (_validator.IsSecondBowlScoreNotRecordedFor(frame))
-                _frameHandler.SetSecondBowlForFrame(frame, kickedPins);
+                frame.SecondBowlScore = kickedPins;
             else if (_validator.IsThirdBowlScoreNotRecordedFor(frame))
                 FinishFrame(frame, kickedPins);
         }
@@ -66,7 +57,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
 
         private void FinishFrame(Frame frame, int kickedPins)
         {
-            _frameHandler.SetThirdBowlForFrame(frame, kickedPins);
+            frame.ThirdBowlBonusScore = kickedPins;
             _frameHandler.SetIsReadyToScoreForFrameToTrue(frame);
         }
 

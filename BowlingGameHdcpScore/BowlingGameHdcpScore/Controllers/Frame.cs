@@ -6,6 +6,8 @@ namespace TenPinsBowlingGameHdcp.Controllers
 {
     internal class Frame
     {
+        const int NoBallBowled = -1;
+
         private CommonValidator _validator = new CommonValidator();
         private int _firstBowlScore;
         private int _secondBowlScore;
@@ -13,13 +15,12 @@ namespace TenPinsBowlingGameHdcp.Controllers
 
         public FrameStatus FrameStatus { get; private set; }
 
-        public bool IsFrameClose { get; private set; } = false;
         public bool IsFrameReadyForScore { get; private set; } = false;
         public bool IsFinalFrame { get; } = false;
 
         public Frame(bool isfinalFrame = false)
         {
-            _firstBowlScore = _secondBowlScore = _thirdBowlBonusScore = ConstTenPinsGameData.InitialValueForTheBowlThrow;
+            _firstBowlScore = _secondBowlScore = _thirdBowlBonusScore = NoBallBowled;
             IsFinalFrame = isfinalFrame;
         }
 
@@ -74,9 +75,17 @@ namespace TenPinsBowlingGameHdcp.Controllers
             }
         }
 
-        public void SetIsFrameClosed(bool isSet)
+        public bool IsFrameClose
         {
-            IsFrameClose = isSet;
+            get 
+            {
+                if(FirstBowlScore == ConstTenPinsGameData.StartingPinsNumber)
+                {
+                    return true;
+                }
+
+                return FirstBowlScore != NoBallBowled && SecondBowlScore != NoBallBowled;
+            }
         }
 
         public void SetIsFrameReadyForScore(bool isSet)
