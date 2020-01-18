@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TenPinsBowlingGameHdcp.Controllers;
 
@@ -16,7 +17,7 @@ namespace TenPinsBowlingGameHdcp.Tests
 
             Action action = () => frame.FirstBowlScore = value;
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(action, reason);
+            action.Should().Throw<ArgumentOutOfRangeException>(reason);
         }
 
         [DataTestMethod]
@@ -28,7 +29,7 @@ namespace TenPinsBowlingGameHdcp.Tests
 
             Action action = () => frame.SecondBowlScore = value;
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(action, reason);
+            action.Should().Throw<ArgumentOutOfRangeException>(reason);
         }
 
         [DataTestMethod]
@@ -40,7 +41,25 @@ namespace TenPinsBowlingGameHdcp.Tests
 
             Action action = () => frame.ThirdBowlBonusScore = value;
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(action, reason);
+            action.Should().Throw<ArgumentOutOfRangeException>(reason);
+        }
+
+        [DataTestMethod]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void Constructor_Sets_IsFinalFrame(bool isFinal)
+        {
+            var frame = new Frame(isFinal);
+
+            frame.IsFinalFrame.Should().Be(isFinal);
+        }
+
+        [TestMethod]
+        public void DefaultConstructor_Sets_IsFinalFrame_False()
+        {
+            var frame = new Frame();
+
+            frame.IsFinalFrame.Should().BeFalse();
         }
     }
 }

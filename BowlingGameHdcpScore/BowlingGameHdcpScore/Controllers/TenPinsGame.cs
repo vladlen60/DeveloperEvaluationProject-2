@@ -41,7 +41,7 @@ namespace TenPinsBowlingGameHdcp.Controllers
 
             if (_currentFrameIsNotSetYet)
             {
-                ArrayOfFrames[_currentFrameIndex] = new Frame();
+                ArrayOfFrames[_currentFrameIndex] = new Frame(IsFinalFrame);
                 OrchestrateFramesBasedOnFirstThrowScore(kickedPins);
             }
             else
@@ -58,7 +58,7 @@ namespace TenPinsBowlingGameHdcp.Controllers
 
 
 
-        private bool _isFinalFrame => _currentFrameIndex == ConstTenPinsGameData.FinalFrameIndex;
+        private bool IsFinalFrame => _currentFrameIndex == ConstTenPinsGameData.FinalFrameIndex;
         private bool _isFrameBeforeLastAvailable => (_currentFrameIndex > 1) ? true : false;
         private bool _isPreviousFrameAvailable => (_currentFrameIndex > 0) ? true : false;
         private readonly GameHandler _gameHandler = new GameHandler();
@@ -67,9 +67,6 @@ namespace TenPinsBowlingGameHdcp.Controllers
         {
             int previousFrameIndex = _currentFrameIndex - 1;
             int beforeLastFrameIndex = _currentFrameIndex - 2;
-
-            if (_isFinalFrame)
-                _gameHandler.SetFinalFrameFlagIfApplicableFor(ArrayOfFrames[_currentFrameIndex]);
 
             _gameHandler.SetFirstScoreForNewFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
 

@@ -51,11 +51,5 @@ namespace TenPinsBowlingGameHdcp.Handlers
             _validator.ValidateFrameIsNotNull(frame);
             frame.SetFrameStatus(frameStatus);
         }
-
-        internal void SetIsFinalFrameFlagToTrue(Frame frame)
-        {
-            _validator.ValidateFrameIsNotNull(frame);
-            frame.SetIsFinalFrame(true);
-        }
     }
 }
