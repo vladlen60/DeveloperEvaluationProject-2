@@ -100,5 +100,129 @@ namespace TenPinsBowlingGameHdcp.Tests
 
             frame.IsFrameClose.Should().BeTrue();
         }
+
+        [TestMethod]
+        public void Should_Not_Be_Ready_For_Score()
+        {
+            var frame = new Frame();
+
+            frame.IsFrameReadyForScore.Should().BeFalse();
+        }
+
+        [DataTestMethod]
+        [DataRow(0)]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(3)]
+        [DataRow(4)]
+        [DataRow(5)]
+        [DataRow(6)]
+        [DataRow(7)]
+        [DataRow(8)]
+        [DataRow(9)]
+        [DataRow(10)]
+        public void Should_Not_Be_Ready_For_Score_When_1_Ball(int score)
+        {
+            var frame = new Frame();
+
+            frame.FirstBowlScore = score;
+
+            frame.IsFrameReadyForScore.Should().BeFalse();
+        }
+
+        [DataTestMethod]
+        [DataRow(0, 0)]
+        [DataRow(0, 1)]
+        [DataRow(1, 0)]
+        [DataRow(1, 1)]
+        [DataRow(1, 8)]
+        [DataRow(3, 6)]
+        [DataRow(4, 2)]
+        [DataRow(5, 0)]
+        public void Should_Be_Ready_For_Score_When_2_Balls(int first, int second)
+        {
+            var frame = new Frame();
+
+            frame.FirstBowlScore = first;
+            frame.SecondBowlScore = second;
+
+            frame.IsFrameReadyForScore.Should().BeTrue();
+        }
+
+        [DataTestMethod]
+        [DataRow(0)]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(3)]
+        [DataRow(4)]
+        [DataRow(5)]
+        [DataRow(6)]
+        [DataRow(7)]
+        [DataRow(8)]
+        [DataRow(9)]
+        public void Should_Not_Be_Ready_For_Score_When_Spare(int score)
+        {
+            var frame = new Frame();
+
+            frame.FirstBowlScore = score;
+            frame.SecondBowlScore = 10 - score;
+
+            frame.IsFrameReadyForScore.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Should_Not_Be_Ready_For_Score_When_Strike()
+        {
+            var frame = new Frame();
+
+            frame.FirstBowlScore = 10;
+
+            frame.IsFrameReadyForScore.Should().BeFalse();
+        }
+
+        [DataTestMethod]
+        [DataRow(0)]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(3)]
+        [DataRow(4)]
+        [DataRow(5)]
+        [DataRow(6)]
+        [DataRow(7)]
+        [DataRow(8)]
+        [DataRow(9)]
+        public void Should_Be_Ready_For_Score_When_Spare_And_Bonus(int score)
+        {
+            var frame = new Frame();
+
+            frame.FirstBowlScore = score;
+            frame.SecondBowlScore = 10 - score;
+            frame.ThirdBowlBonusScore = 0;
+
+            frame.IsFrameReadyForScore.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Should_Not_Be_Ready_For_Score_When_Strike_And_Single_Bonus()
+        {
+            var frame = new Frame();
+
+            frame.FirstBowlScore = 10;
+            frame.SecondBowlScore = 0;
+
+            frame.IsFrameReadyForScore.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Should_Be_Ready_For_Score_When_Strike_And_Double_Bonus()
+        {
+            var frame = new Frame();
+
+            frame.FirstBowlScore = 10;
+            frame.SecondBowlScore = 0;
+            frame.ThirdBowlBonusScore = 0;
+
+            frame.IsFrameReadyForScore.Should().BeTrue();
+        }
     }
 }

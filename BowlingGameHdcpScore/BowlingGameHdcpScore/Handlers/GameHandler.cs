@@ -58,7 +58,6 @@ namespace TenPinsBowlingGameHdcp.Handlers
         private void FinishFrame(Frame frame, int kickedPins)
         {
             frame.ThirdBowlBonusScore = kickedPins;
-            _frameHandler.SetIsReadyToScoreForFrameToTrue(frame);
         }
 
 

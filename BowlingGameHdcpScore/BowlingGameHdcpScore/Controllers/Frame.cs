@@ -15,13 +15,36 @@ namespace TenPinsBowlingGameHdcp.Controllers
 
         public FrameStatus FrameStatus { get; private set; }
 
-        public bool IsFrameReadyForScore { get; private set; } = false;
         public bool IsFinalFrame { get; } = false;
 
         public Frame(bool isfinalFrame = false)
         {
             _firstBowlScore = _secondBowlScore = _thirdBowlBonusScore = NoBallBowled;
             IsFinalFrame = isfinalFrame;
+        }
+
+        public bool IsFrameReadyForScore
+        {
+            get
+            {
+                //if two balls not strike or spare
+                if(FirstBowlScore != NoBallBowled 
+                    && SecondBowlScore != NoBallBowled 
+                    && FirstBowlScore + SecondBowlScore < ConstTenPinsGameData.StartingPinsNumber)
+                    { 
+                        return true; 
+                    }
+
+                //if all balls including bonus
+                if (FirstBowlScore != NoBallBowled
+                    && SecondBowlScore != NoBallBowled
+                    && ThirdBowlBonusScore != NoBallBowled)
+                    {
+                        return true;
+                    }
+
+                return false;
+            }
         }
 
         public int FirstBowlScore
@@ -86,11 +109,6 @@ namespace TenPinsBowlingGameHdcp.Controllers
 
                 return FirstBowlScore != NoBallBowled && SecondBowlScore != NoBallBowled;
             }
-        }
-
-        public void SetIsFrameReadyForScore(bool isSet)
-        {
-            IsFrameReadyForScore = isSet;
         }
 
         public void SetFrameStatus(FrameStatus frameStatus)
