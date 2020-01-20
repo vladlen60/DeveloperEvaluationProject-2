@@ -94,7 +94,7 @@ namespace TenPinsBowlingGameHdcp.Controllers
             {
                 if (IsFrameReadyForScore)
                 {
-                    return _bowlScores.Sum();
+                    return _bowlScores.Sum() + _bonusScores.Sum();
                 }
 
                 return 0;

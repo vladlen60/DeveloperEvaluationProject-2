@@ -429,5 +429,67 @@ namespace TenPinsBowlingGameHdcp.Tests
 
             action.Should().Throw<NoBonusNeededException>();
         }
+
+        [DataTestMethod]
+        [DataRow(0, 0)]
+        [DataRow(0, 1)]
+        [DataRow(1, 0)]
+        [DataRow(1, 1)]
+        [DataRow(1, 8)]
+        [DataRow(3, 6)]
+        [DataRow(4, 2)]
+        [DataRow(5, 0)]
+        public void Should_Calculate_Score_For_Regular_Frame(int first, int second)
+        {
+            var frame = new Frame();
+
+            frame.Bowl(first);
+            frame.Bowl(second);
+
+            frame.Score.Should().Be(first + second);
+        }
+
+        [DataTestMethod]
+        [DataRow(0)]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(3)]
+        [DataRow(4)]
+        [DataRow(5)]
+        [DataRow(6)]
+        [DataRow(7)]
+        [DataRow(8)]
+        [DataRow(9)]
+        [DataRow(10)]
+        public void Should_Calculate_Score_For_Spare_Frame(int bonus)
+        {
+            var frame = new Frame();
+
+            frame.Bowl(5);
+            frame.Bowl(5);
+            frame.ApplyBonus(bonus);
+
+            frame.Score.Should().Be(10 + bonus);
+        }
+
+        [DataTestMethod]
+        [DataRow(0, 0)]
+        [DataRow(0, 1)]
+        [DataRow(1, 0)]
+        [DataRow(1, 1)]        
+        [DataRow(10, 10)]
+        [DataRow(5, 5)]
+        [DataRow(5, 0)]
+        [DataRow(1, 8)]
+        public void Should_Calculate_Score_For_Strike_Frame(int firstBonus, int secondBonus)
+        {
+            var frame = new Frame();
+
+            frame.Bowl(10);
+            frame.ApplyBonus(firstBonus);
+            frame.ApplyBonus(secondBonus);
+
+            frame.Score.Should().Be(10 + firstBonus + secondBonus);
+        }
     }
 }
