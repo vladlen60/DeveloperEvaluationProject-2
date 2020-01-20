@@ -16,6 +16,7 @@ namespace TenPinsBowlingGameHdcp.Controllers
         private int _secondBowlScore;
         private int _thirdBowlBonusScore;
         private List<int> _bowlScores = new List<int>();
+        private List<int> _bonusScores = new List<int>();
 
         public bool IsFinalFrame { get; } = false;
 
@@ -23,30 +24,6 @@ namespace TenPinsBowlingGameHdcp.Controllers
         {
             _firstBowlScore = _secondBowlScore = _thirdBowlBonusScore = NoBallBowled;
             IsFinalFrame = isfinalFrame;
-        }
-
-        public bool IsFrameReadyForScore
-        {
-            get
-            {
-                //if two balls not strike or spare
-                if (FirstBowlScore != NoBallBowled
-                    && SecondBowlScore != NoBallBowled
-                    && FirstBowlScore + SecondBowlScore < ConstTenPinsGameData.StartingPinsNumber)
-                {
-                    return true;
-                }
-
-                //if all balls including bonus
-                if (FirstBowlScore != NoBallBowled
-                    && SecondBowlScore != NoBallBowled
-                    && ThirdBowlBonusScore != NoBallBowled)
-                {
-                    return true;
-                }
-
-                return false;
-            }
         }
 
         public void Bowl(int kickedPins)
@@ -59,11 +36,63 @@ namespace TenPinsBowlingGameHdcp.Controllers
             _bowlScores.Add(kickedPins);
         }
 
+        public void ApplyBonus(int kickedPins)
+        {
+            if(!NeedsBonus)
+            {
+                throw new NoBonusNeededException();
+            }
+
+            _bonusScores.Add(kickedPins);
+        }
+
+        public bool NeedsBonus
+        {
+            get 
+            {
+                //if a spare
+                if(IsSpare&& _bonusScores.Count() == 0)
+                {
+                    return true;
+                }
+
+                if(IsStrike&& _bonusScores.Count() < 2)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        private bool IsSpare => _bowlScores.Count == 2 && _bowlScores.Sum() == ConstTenPinsGameData.StartingPinsNumber;
+
+        private bool IsStrike => _bowlScores.FirstOrDefault() == ConstTenPinsGameData.StartingPinsNumber;
+
+        public bool IsFrameReadyForScore
+        {
+            get
+            {
+                //if two balls not strike or spare
+                if (_bowlScores.Count == 2 && _bowlScores.Sum() < 10)
+                {
+                    return true;
+                }
+
+                if((IsSpare|| IsStrike) && NeedsBonus == false)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public int Score
         {
             get
             {
-                if (IsFrameClosed)
+                if (IsFrameReadyForScore)
                 {
                     return _bowlScores.Sum();
                 }

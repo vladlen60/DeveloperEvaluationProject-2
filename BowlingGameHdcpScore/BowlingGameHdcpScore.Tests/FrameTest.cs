@@ -75,7 +75,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.FirstBowlScore = 0;
+            frame.Bowl(0);
 
             frame.IsFrameClosed.Should().BeFalse();
         }
@@ -238,7 +238,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.FirstBowlScore = score;
+            frame.Bowl(score);
 
             frame.IsFrameReadyForScore.Should().BeFalse();
         }
@@ -256,8 +256,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.FirstBowlScore = first;
-            frame.SecondBowlScore = second;
+            frame.Bowl(first);
+            frame.Bowl(second);
 
             frame.IsFrameReadyForScore.Should().BeTrue();
         }
@@ -277,8 +277,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.FirstBowlScore = score;
-            frame.SecondBowlScore = 10 - score;
+            frame.Bowl(score);
+            frame.Bowl(10 - score);
 
             frame.IsFrameReadyForScore.Should().BeFalse();
         }
@@ -288,7 +288,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.FirstBowlScore = 10;
+            frame.Bowl(10);
 
             frame.IsFrameReadyForScore.Should().BeFalse();
         }
@@ -308,9 +308,9 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.FirstBowlScore = score;
-            frame.SecondBowlScore = 10 - score;
-            frame.ThirdBowlBonusScore = 0;
+            frame.Bowl(score);
+            frame.Bowl(10 - score);
+            frame.ApplyBonus(0);
 
             frame.IsFrameReadyForScore.Should().BeTrue();
         }
@@ -320,8 +320,8 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.FirstBowlScore = 10;
-            frame.SecondBowlScore = 0;
+            frame.Bowl(10);
+            frame.ApplyBonus(0);
 
             frame.IsFrameReadyForScore.Should().BeFalse();
         }
@@ -331,11 +331,103 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.FirstBowlScore = 10;
-            frame.SecondBowlScore = 0;
-            frame.ThirdBowlBonusScore = 0;
+            frame.Bowl(10);
+            frame.ApplyBonus(0);
+            frame.ApplyBonus(0);
 
             frame.IsFrameReadyForScore.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Should_Not_Need_Bonus_For_New_Frame()
+        {
+            var frame = new Frame();
+
+            frame.NeedsBonus.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Should_Need_Bonus_For_Strike()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(10);
+
+            frame.NeedsBonus.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Should_Need_Bonus_For_Strike_With_1_Bonus()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(10);
+            frame.ApplyBonus(0);
+
+            frame.NeedsBonus.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Should_Not_Need_Bonus_For_Strike_With_2_Bonuses()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(10);
+            frame.ApplyBonus(0);
+            frame.ApplyBonus(0);
+
+            frame.NeedsBonus.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Should_Need_Bonus_For_Spare()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(1);
+            frame.Bowl(9);
+
+            frame.NeedsBonus.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Should_Not_Need_Bonus_For_Spare_With_Bonus()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(1);
+            frame.Bowl(9);
+            frame.ApplyBonus(0);
+
+            frame.NeedsBonus.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Should_Throw_When_Adding_Third_Bonus_To_Strike()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(10);
+            frame.ApplyBonus(0);
+            frame.ApplyBonus(0);
+            
+            Action action = () => frame.ApplyBonus(0);
+
+            action.Should().Throw<NoBonusNeededException>();
+        }
+
+        [TestMethod]
+        public void Should_Throw_When_Adding_Second_Bonus_To_Spare()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(1);
+            frame.Bowl(9);
+            frame.ApplyBonus(0);
+
+            Action action = () => frame.ApplyBonus(0);
+
+            action.Should().Throw<NoBonusNeededException>();
         }
     }
 }

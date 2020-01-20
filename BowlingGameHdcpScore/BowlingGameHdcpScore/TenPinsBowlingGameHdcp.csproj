@@ -73,6 +73,7 @@
     <Compile Include="Controllers\Frame.cs" />
     <Compile Include="Controllers\FrameClosedException.cs" />
     <Compile Include="Controllers\FrameStatus.cs" />
+    <Compile Include="Controllers\NoBonusNeededException.cs" />
     <Compile Include="Handlers\GameHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
