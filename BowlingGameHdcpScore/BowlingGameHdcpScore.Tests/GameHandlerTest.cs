@@ -17,7 +17,7 @@ namespace TenPinsBowlingGameHdcp.Tests
             //-- Act
             try
             {
-                gameHandler.SetPropertiesForCurrentFrame(null, kickedPinsCount);
+                gameHandler.SetSecondBowlOfRegularFrame(null, kickedPinsCount);
             }
             catch (ArgumentNullException)
             {

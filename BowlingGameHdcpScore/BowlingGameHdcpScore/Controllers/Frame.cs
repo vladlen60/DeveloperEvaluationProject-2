@@ -13,8 +13,6 @@ namespace TenPinsBowlingGameHdcp.Controllers
         private int _secondBowlScore;
         private int _thirdBowlBonusScore;
 
-        public FrameStatus FrameStatus { get; private set; }
-
         public bool IsFinalFrame { get; } = false;
 
         public Frame(bool isfinalFrame = false)
@@ -109,11 +107,6 @@ namespace TenPinsBowlingGameHdcp.Controllers
 
                 return FirstBowlScore != NoBallBowled && SecondBowlScore != NoBallBowled;
             }
-        }
-
-        public void SetFrameStatus(FrameStatus frameStatus)
-        {
-            FrameStatus = frameStatus;
         }
     }
 }

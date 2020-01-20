@@ -71,26 +71,23 @@ namespace TenPinsBowlingGameHdcp.Controllers
             _gameHandler.SetFirstScoreForNewFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
 
             if (_isFrameBeforeLastAvailable)
-                _gameHandler.SetDifferentPropertiesForFrame(ArrayOfFrames[beforeLastFrameIndex], kickedPins);
+                _gameHandler.SetSecondOrThirdBowlAsAppropriate(ArrayOfFrames[beforeLastFrameIndex], kickedPins);
             if (_isPreviousFrameAvailable)
-                _gameHandler.SetDifferentPropertiesForFrame(ArrayOfFrames[previousFrameIndex], kickedPins);
-
-            _gameHandler.SetStatusForCurrentFrame(ArrayOfFrames[_currentFrameIndex]);
+                _gameHandler.SetSecondOrThirdBowlAsAppropriate(ArrayOfFrames[previousFrameIndex], kickedPins);
         }
 
-        private bool _isCurrentFrameFinalWithBonus =>
-            (ArrayOfFrames[_currentFrameIndex].FrameStatus == FrameStatus.TenthFrameWithBonus) ? true : false;
         private void OrchestrateFramesBasedOnSecondThrowScore(int kickedPins)
         {
             int previousFrameIndex = _currentFrameIndex - 1;
 
             if (_isPreviousFrameAvailable)
-                _gameHandler.SetDifferentPropertiesForFrame(ArrayOfFrames[previousFrameIndex], kickedPins);
-            
-            if (_isCurrentFrameFinalWithBonus)
-                _gameHandler.SetDifferentPropertiesForFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
+                _gameHandler.SetSecondOrThirdBowlAsAppropriate(ArrayOfFrames[previousFrameIndex], kickedPins);
+
+            var currentFrame = ArrayOfFrames[_currentFrameIndex];
+            if (_currentFrameIndex == 9 && (currentFrame.FirstBowlScore == 10 || currentFrame.FirstBowlScore + currentFrame.SecondBowlScore == 10))
+                _gameHandler.SetSecondOrThirdBowlAsAppropriate(ArrayOfFrames[_currentFrameIndex], kickedPins);
             else
-                _gameHandler.SetPropertiesForCurrentFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
+                _gameHandler.SetSecondBowlOfRegularFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
         }
 
         private int IncreaseFrameIndexWhileNotFinalFrame(Frame currentFrame, int currentFrameIndex)

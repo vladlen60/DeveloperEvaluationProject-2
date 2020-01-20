@@ -72,7 +72,6 @@
     <Compile Include="Common\ConstTenPinsGameData.cs" />
     <Compile Include="Controllers\Frame.cs" />
     <Compile Include="Controllers\FrameStatus.cs" />
-    <Compile Include="Handlers\FrameHandler.cs" />
     <Compile Include="Handlers\GameHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

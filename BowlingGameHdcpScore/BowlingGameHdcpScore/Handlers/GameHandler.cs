@@ -8,7 +8,6 @@ namespace TenPinsBowlingGameHdcp.Handlers
     internal class GameHandler
     {
         private readonly int _startingPinsNumber = ConstTenPinsGameData.StartingPinsNumber;
-        private readonly FrameHandler _frameHandler = new FrameHandler();
         private CommonValidator _validator = new CommonValidator();
 
 
@@ -17,25 +16,12 @@ namespace TenPinsBowlingGameHdcp.Handlers
             currentFrame.FirstBowlScore = kickedPins;
         }
         
-        internal void SetPropertiesForCurrentFrame(Frame currentFrame, int kickedPins)
+        internal void SetSecondBowlOfRegularFrame(Frame currentFrame, int kickedPins)
         {
             _validator.ValidateFrameIsNotNull(currentFrame);
             ValidateSecondBowlValueForFrame(currentFrame, kickedPins);
             currentFrame.SecondBowlScore = kickedPins;
-            SetStatusForCurrentFrame(currentFrame);
             CompleteRegularFrame(currentFrame);
-        }
-
-        internal void SetStatusForCurrentFrame(Frame currentFrame)
-        {
-            _validator.ValidateFrameIsNotNull(currentFrame);
-            if (IsFirstBowlStrikeFor(currentFrame))
-                _frameHandler.SetStatusForFrame(currentFrame, FrameStatus.Strike);
-            else if (IsSecondBowlSpareFor(currentFrame))
-                _frameHandler.SetStatusForFrame(currentFrame, FrameStatus.Spare);
-            if (currentFrame.IsFinalFrame && (currentFrame.FrameStatus == FrameStatus.Strike ||
-                                              currentFrame.FrameStatus == FrameStatus.Spare))
-                _frameHandler.SetStatusForFrame(currentFrame, FrameStatus.TenthFrameWithBonus);
         }
 
         private void CompleteRegularFrame(Frame currentFrame)
@@ -45,7 +31,7 @@ namespace TenPinsBowlingGameHdcp.Handlers
                 FinishFrame(currentFrame, ConstTenPinsGameData.ThirdBowlForFrameWithoutBonus);
         }
 
-        internal void SetDifferentPropertiesForFrame(Frame frame, int kickedPins)
+        internal void SetSecondOrThirdBowlAsAppropriate(Frame frame, int kickedPins)
         {
             _validator.ValidateFrameIsNotNull(frame);
             if (_validator.IsSecondBowlScoreNotRecordedFor(frame))
