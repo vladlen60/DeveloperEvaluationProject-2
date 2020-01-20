@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TenPinsBowlingGameHdcp.Common;
 using TenPinsBowlingGameHdcp.Validators;
 
@@ -6,12 +8,14 @@ namespace TenPinsBowlingGameHdcp.Controllers
 {
     internal class Frame
     {
+        //todo remove this const
         const int NoBallBowled = -1;
 
         private CommonValidator _validator = new CommonValidator();
         private int _firstBowlScore;
         private int _secondBowlScore;
         private int _thirdBowlBonusScore;
+        private List<int> _bowlScores = new List<int>();
 
         public bool IsFinalFrame { get; } = false;
 
@@ -26,22 +30,45 @@ namespace TenPinsBowlingGameHdcp.Controllers
             get
             {
                 //if two balls not strike or spare
-                if(FirstBowlScore != NoBallBowled 
-                    && SecondBowlScore != NoBallBowled 
+                if (FirstBowlScore != NoBallBowled
+                    && SecondBowlScore != NoBallBowled
                     && FirstBowlScore + SecondBowlScore < ConstTenPinsGameData.StartingPinsNumber)
-                    { 
-                        return true; 
-                    }
+                {
+                    return true;
+                }
 
                 //if all balls including bonus
                 if (FirstBowlScore != NoBallBowled
                     && SecondBowlScore != NoBallBowled
                     && ThirdBowlBonusScore != NoBallBowled)
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
 
                 return false;
+            }
+        }
+
+        public void Bowl(int kickedPins)
+        {
+            if (IsFrameClosed)
+            {
+                throw new FrameClosedException();
+            }
+
+            _bowlScores.Add(kickedPins);
+        }
+
+        public int Score
+        {
+            get
+            {
+                if (IsFrameClosed)
+                {
+                    return _bowlScores.Sum();
+                }
+
+                return 0;
             }
         }
 
@@ -53,7 +80,7 @@ namespace TenPinsBowlingGameHdcp.Controllers
             }
             set
             {
-                if (!_validator.IsValidKickedPinsCount(value)) 
+                if (!_validator.IsValidKickedPinsCount(value))
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
@@ -96,16 +123,16 @@ namespace TenPinsBowlingGameHdcp.Controllers
             }
         }
 
-        public bool IsFrameClose
+        public bool IsFrameClosed
         {
-            get 
+            get
             {
-                if(FirstBowlScore == ConstTenPinsGameData.StartingPinsNumber)
+                if (_bowlScores.FirstOrDefault() == ConstTenPinsGameData.StartingPinsNumber)
                 {
                     return true;
                 }
 
-                return FirstBowlScore != NoBallBowled && SecondBowlScore != NoBallBowled;
+                return _bowlScores.Count == 2;
             }
         }
     }

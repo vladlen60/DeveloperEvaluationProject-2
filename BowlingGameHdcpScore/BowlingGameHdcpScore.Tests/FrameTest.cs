@@ -67,7 +67,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.IsFrameClose.Should().BeFalse();
+            frame.IsFrameClosed.Should().BeFalse();
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace TenPinsBowlingGameHdcp.Tests
 
             frame.FirstBowlScore = 0;
 
-            frame.IsFrameClose.Should().BeFalse();
+            frame.IsFrameClosed.Should().BeFalse();
         }
 
         [TestMethod]
@@ -85,10 +85,10 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.FirstBowlScore = 0;
-            frame.SecondBowlScore = 0;
+            frame.Bowl(0);
+            frame.Bowl(0);
 
-            frame.IsFrameClose.Should().BeTrue();
+            frame.IsFrameClosed.Should().BeTrue();
         }
 
         [TestMethod]
@@ -96,9 +96,122 @@ namespace TenPinsBowlingGameHdcp.Tests
         {
             var frame = new Frame();
 
-            frame.FirstBowlScore = 10;
+            frame.Bowl(10);
 
-            frame.IsFrameClose.Should().BeTrue();
+            frame.IsFrameClosed.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Can_Bowl_Two_Balls_Without_Exception()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(3);
+            frame.Bowl(3);
+        }
+
+        [TestMethod]
+        public void Bowling_Three_Balls_Throws_Exception()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(3);
+            frame.Bowl(3);
+
+            Action action = () => frame.Bowl(1);
+
+            action.Should().Throw<FrameClosedException>();
+        }
+
+        [TestMethod]
+        public void Bowling_Another_Ball_After_A_Strike_Should_Throw()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(10);
+
+            Action action = () => frame.Bowl(1);
+
+            action.Should().Throw<FrameClosedException>();
+        }
+
+        [TestMethod]
+        public void Should_Score_0_By_Default()
+        {
+            var frame = new Frame();
+
+            frame.Score.Should().Be(0);
+        }
+
+        [DataTestMethod]
+        [DataRow(0)]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(3)]
+        [DataRow(4)]
+        [DataRow(5)]
+        [DataRow(6)]
+        [DataRow(7)]
+        [DataRow(8)]
+        [DataRow(9)]
+        [DataRow(10)]
+        public void Should_Score_0_When_1_Ball(int score)
+        {
+            var frame = new Frame();
+
+            frame.Bowl(score);
+
+            frame.Score.Should().Be(0);
+        }
+
+        [DataTestMethod]
+        [DataRow(0, 0)]
+        [DataRow(0, 1)]
+        [DataRow(1, 0)]
+        [DataRow(1, 1)]
+        [DataRow(1, 8)]
+        [DataRow(3, 6)]
+        [DataRow(4, 2)]
+        [DataRow(5, 0)]
+        public void Should_Score_Something_When_2_Balls(int first, int second)
+        {
+            var frame = new Frame();
+
+            frame.Bowl(first);
+            frame.Bowl(second);
+
+            frame.Score.Should().Be(first + second);
+        }
+
+        [DataTestMethod]
+        [DataRow(0)]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(3)]
+        [DataRow(4)]
+        [DataRow(5)]
+        [DataRow(6)]
+        [DataRow(7)]
+        [DataRow(8)]
+        [DataRow(9)]
+        public void Should_Score_0_When_Spare(int first)
+        {
+            var frame = new Frame();
+
+            frame.Bowl(first);
+            frame.Bowl(10 - first);
+
+            frame.Score.Should().Be(0);
+        }
+
+        [TestMethod]
+        public void Should_Score_0_When_Strike()
+        {
+            var frame = new Frame();
+
+            frame.Bowl(10);
+
+            frame.Score.Should().Be(0);
         }
 
         [TestMethod]

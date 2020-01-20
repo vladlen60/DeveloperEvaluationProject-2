@@ -11,16 +11,11 @@ namespace TenPinsBowlingGameHdcp.Handlers
         private CommonValidator _validator = new CommonValidator();
 
 
-        internal void SetFirstScoreForNewFrame(Frame currentFrame, int kickedPins)
-        {
-            currentFrame.FirstBowlScore = kickedPins;
-        }
-        
         internal void SetSecondBowlOfRegularFrame(Frame currentFrame, int kickedPins)
         {
             _validator.ValidateFrameIsNotNull(currentFrame);
             ValidateSecondBowlValueForFrame(currentFrame, kickedPins);
-            currentFrame.SecondBowlScore = kickedPins;
+            currentFrame.Bowl(kickedPins);
             CompleteRegularFrame(currentFrame);
         }
 
@@ -51,11 +46,6 @@ namespace TenPinsBowlingGameHdcp.Handlers
         {
             if (frame.FirstBowlScore + kickedPins > _startingPinsNumber)
                 throw new ArgumentException($"The 2nd throw pins of {kickedPins} is higher than allowed for this frame. Pls check.");
-        }
-
-        private bool IsFirstBowlStrikeFor(Frame frame)
-        {
-            return frame.FirstBowlScore == _startingPinsNumber;
         }
 
         private bool IsSecondBowlSpareFor(Frame frame)

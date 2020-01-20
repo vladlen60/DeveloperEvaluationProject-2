@@ -6,13 +6,10 @@ namespace TenPinsBowlingGameHdcp.Controllers
         public virtual int CalculateCurrentHdcpScoreFor(Frame[] arrayOfCurrentFrames, int currentFrameIndex)
         {
             var currentScoreForGame = 0;
-            for (int countIndex = 0; countIndex <= currentFrameIndex; countIndex++)
+            for (int i = 0; i <= currentFrameIndex; i++)
             {
-                if (arrayOfCurrentFrames[countIndex].IsFrameReadyForScore)
-                    currentScoreForGame += arrayOfCurrentFrames[countIndex].FirstBowlScore +
-                                 arrayOfCurrentFrames[countIndex].SecondBowlScore +
-                                 arrayOfCurrentFrames[countIndex].ThirdBowlBonusScore;
-
+                var frame = arrayOfCurrentFrames[i];
+                currentScoreForGame += frame.Score;
             }
 
             return currentScoreForGame;
