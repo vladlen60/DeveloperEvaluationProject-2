@@ -73,11 +73,11 @@
     <Compile Include="Controllers\Frame.cs" />
     <Compile Include="Controllers\FrameClosedException.cs" />
     <Compile Include="Controllers\FrameStatus.cs" />
+    <Compile Include="Controllers\GameOverException.cs" />
     <Compile Include="Controllers\NoBonusNeededException.cs" />
-    <Compile Include="Handlers\GameHandler.cs" />
+    <Compile Include="Controllers\TooManyPinsException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\ScoreCalculator.cs" />
     <Compile Include="Controllers\TenPinsGame.cs" />
     <Compile Include="Validators\CommonValidator.cs" />
   </ItemGroup>

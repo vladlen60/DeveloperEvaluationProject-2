@@ -1,28 +1,15 @@
 ﻿using System;
-using TenPinsBowlingGameHdcp.Common;
-using TenPinsBowlingGameHdcp.Handlers;
+using System.Collections.Generic;
+using System.Linq;
 using TenPinsBowlingGameHdcp.Validators;
 
 namespace TenPinsBowlingGameHdcp.Controllers
 {
     public class TenPinsGame
     {
-        private Frame[] ArrayOfFrames;
-        private int _currentFrameIndex;
-        private readonly int _maxFrameNumber;
-        private ScoreCalculator _scoreCalculator;
+        private List<Frame> _frames = new List<Frame>();
         private CommonValidator _validator = new CommonValidator();
 
-
-        public TenPinsGame()
-        {
-            _currentFrameIndex = 0;
-            _maxFrameNumber = ConstTenPinsGameData.MaxFramesNumber;
-            ArrayOfFrames = new Frame[_maxFrameNumber];
-            _scoreCalculator = new ScoreCalculator();
-        }
-
-        private bool _currentFrameIsNotSetYet => ArrayOfFrames[_currentFrameIndex] == null;
         /// <summary>
         /// Takes kicked-pins count for the current throw,
         /// and returns the current score for all applicable frames for the game up until current throw
@@ -36,67 +23,32 @@ namespace TenPinsBowlingGameHdcp.Controllers
                 throw new ArgumentException(nameof(kickedPins));
             }
 
-            if (_currentFrameIsNotSetYet)
+            var currentFrame = _frames.LastOrDefault();
+
+            if(currentFrame != null && currentFrame.IsFinalFrame && currentFrame.IsFrameClosed && !currentFrame.NeedsBonus)
             {
-                ArrayOfFrames[_currentFrameIndex] = new Frame(IsFinalFrame);
+                throw new GameOverException();
             }
 
-            ArrayOfFrames[_currentFrameIndex].Bowl(kickedPins);
+            if (currentFrame == null || (currentFrame.IsFrameClosed && !currentFrame.IsFinalFrame))
+            {
+                var isFinalFrame = _frames.Count == 9;
+                currentFrame = new Frame(isFinalFrame);
+                _frames.Add(currentFrame);
+            }
 
-            var currentScoreForGame = _scoreCalculator.CalculateCurrentHdcpScoreFor(ArrayOfFrames, _currentFrameIndex);
+            var bonusableFrames = _frames.Where(x => x.NeedsBonus);
+            foreach(var frame in bonusableFrames)
+            {
+                frame.ApplyBonus(kickedPins);
+            }
 
-            _currentFrameIndex = IncreaseFrameIndexWhileNotFinalFrame(ArrayOfFrames[_currentFrameIndex], _currentFrameIndex);
+            if (!currentFrame.IsFrameClosed)
+            {
+                currentFrame.Bowl(kickedPins);
+            }
 
-            return currentScoreForGame;
+            return _frames.Select(x => x.Score).Sum();
         }
-
-
-        private bool IsFinalFrame => _currentFrameIndex == ConstTenPinsGameData.FinalFrameIndex;
-        private bool _isFrameBeforeLastAvailable => (_currentFrameIndex > 1) ? true : false;
-        private bool _isPreviousFrameAvailable => (_currentFrameIndex > 0) ? true : false;
-        private readonly GameHandler _gameHandler = new GameHandler();
-
-        private void BowlTheFirstBallInAFrame(int kickedPins)
-        {
-            int previousFrameIndex = _currentFrameIndex - 1;
-            int beforeLastFrameIndex = _currentFrameIndex - 2;
-
-            ArrayOfFrames[_currentFrameIndex].Bowl(kickedPins);
-
-            if (_isFrameBeforeLastAvailable)
-                _gameHandler.SetSecondOrThirdBowlAsAppropriate(ArrayOfFrames[beforeLastFrameIndex], kickedPins);
-            if (_isPreviousFrameAvailable)
-                _gameHandler.SetSecondOrThirdBowlAsAppropriate(ArrayOfFrames[previousFrameIndex], kickedPins);
-        }
-
-        private void BowlSecondBallInAFrame(int kickedPins)
-        {
-            int previousFrameIndex = _currentFrameIndex - 1;
-
-            if (_isPreviousFrameAvailable)
-                _gameHandler.SetSecondOrThirdBowlAsAppropriate(ArrayOfFrames[previousFrameIndex], kickedPins);
-
-            var currentFrame = ArrayOfFrames[_currentFrameIndex];
-            if (_currentFrameIndex == 9 && (currentFrame.FirstBowlScore == 10 || currentFrame.FirstBowlScore + currentFrame.SecondBowlScore == 10))
-                _gameHandler.SetSecondOrThirdBowlAsAppropriate(ArrayOfFrames[_currentFrameIndex], kickedPins);
-            else
-                _gameHandler.SetSecondBowlOfRegularFrame(ArrayOfFrames[_currentFrameIndex], kickedPins);
-        }
-
-        private int IncreaseFrameIndexWhileNotFinalFrame(Frame currentFrame, int currentFrameIndex)
-        {
-            if (!currentFrame.IsFinalFrame && currentFrame.IsFrameClosed)
-                currentFrameIndex++;
-
-            return currentFrameIndex;
-        }
-
-
-        private void ValidateIfNewBowlAllowedForFinalFrame(Frame currentFrame)
-        {
-            if (currentFrame != null && currentFrame.IsFinalFrame && currentFrame.IsFrameReadyForScore)
-                throw new ArgumentException("Sorry, you have played All available bowl-throws for this game. Pls start a new game.");
-        }
-
     }
 }

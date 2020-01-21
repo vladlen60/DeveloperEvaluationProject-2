@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TenPinsBowlingGameHdcp.Common;
 using TenPinsBowlingGameHdcp.Controllers;
@@ -624,32 +625,22 @@ namespace TenPinsBowlingGameHdcp.Tests
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
 
-            //-- Act
-            try
+            for (int i = 0; i < 9; i++)
             {
-                for (int i = 0; i < 9; i++)
-                {
-                    //bowl 1 for each ball in a frame
-                    game.Bowl(1);
-                    game.Bowl(1);
-                }
-
-                //10th frame spare and bonus
+                //bowl 1 for each ball in a frame
                 game.Bowl(1);
-                game.Bowl(9);
-                game.Bowl(2);
-
-                //extra bonus
                 game.Bowl(1);
             }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual("Sorry, you have played All available bowl-throws for this game. Pls start a new game.", ex.Message);
-                return;
-            }
 
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
+            //10th frame spare and bonus
+            game.Bowl(1);
+            game.Bowl(9);
+            game.Bowl(2);
+
+            //extra bonus
+            Action action = () => game.Bowl(1);
+
+            action.Should().Throw<Exception>();
         }
 
         [TestMethod]
@@ -658,68 +649,36 @@ namespace TenPinsBowlingGameHdcp.Tests
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
 
-            //-- Act
-            try
+            for(int i = 0; i < 10; i++)
             {
-                for(int i = 0; i < 10; i++)
-                {
-                    //bowl 1 for each ball in a frame
-                    game.Bowl(1);
-                    game.Bowl(1);
-                }
-
-                game.Bowl(2);
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual("Sorry, you have played All available bowl-throws for this game. Pls start a new game.", ex.Message);
-                return;
+                //bowl 1 for each ball in a frame
+                game.Bowl(1);
+                game.Bowl(1);
             }
 
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
-        }
+            Action action = () => game.Bowl(2);
 
-        [TestMethod]
-        public void TestFailed_OnGame_Complete_With_No_Misses_But_OutOfRange_Throws_Sum()
-        {
-            //-- Arrange
-            TenPinsGame game = new TenPinsGame();
-            
-            //-- Act
-            try
-            {
-                game.Bowl(6);
-                game.Bowl(6);
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual("The 2nd throw pins of 6 is higher than allowed for this frame. Pls check.", ex.Message);
-                return;
-            }
-
-            //-- Assert
-            Assert.Fail("Call did NOT throw the Argument Exception");
+            action.Should().Throw<GameOverException>();
         }
 
         [DataTestMethod]
-        [DataRow("10, 7,3, 9,0, 10, 0,8, 8,2, 0,6, 10, 10, 10, 8, 1", 167, "cause the test under this says so")]
-        [DataRow("10, 10,10,10,10,10,10,10,10,10,10,10", 300, "perfect game")]
-        [DataRow("0,0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0, 0,0 ", 0, "gutter city")]
-        [DataRow("0,0, 0,0, 0,0, 0,0, 0,1, 0,0, 0,0,0, 0,0, 0, 0,0 ", 1, "a measly one")]
-        [DataRow("0,0, 0,0, 0,0, 0,0, 1,0, 0,0,0, 0,0, 0,0, 0, 0,0 ", 1, "a measly one a different way")]
-        [DataRow("0,0, 0,0, 0,0, 0,10, 0,0, 0,0,0, 0,0, 0,0, 0, 0,0 ", 10, "a spare")]
-        [DataRow("0,0, 0,0, 0,0, 0,0, 0,0, 0,0,0, 0,0, 0,0, 0, 0,5 ", 5, "a single 5 frame")]
-        [DataRow("0,0, 0,0, 0,10, 1,0, 0,0, 0,0,0, 0,0, 0,0, 0, 0,0 ", 12, "a spare and a single")]
-        [DataRow("0,0, 0,0, 0,10, 2,0, 0,0, 0,0,0, 0,0, 0,0, 0, 0,0 ", 14, "a spare and a pair")]
-        [DataRow("0,1, 0,2, 0,3, 0,4, 0,5, 0,6, 0,7, 0,8, 0,9, 0,10, 0 ", 55, "the factorial game")]
-        [DataRow("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,10,1 ", 11, "a spare and a single on the last frame")]
-        [DataRow("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,10, 2 ", 12, "a spare and a pair on the last frame")]
-        [DataRow("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10,0,0 ", 10, "strike on the last frame")]
-        [DataRow("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10,1,0", 11, "strike and single on the last frame")]
-        [DataRow("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10,2,0", 12, "strike and pair on the last frame")]
-        [DataRow("0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10,1,1", 12, "strike and two singles on the last frame")]
-        public void should_calculate_score(string gameInput, int expectedScore, string reason)
+        [DataRow("cause the test under this says so",           "10, 7,3, 9,0, 10, 0,8, 8,2, 0,6, 10, 10, 10, 8, 1", 167)]
+        [DataRow("perfect game",                                "10, 10,10,10,10,10,10,10,10,10,10,10", 300)]
+        [DataRow("gutter city",                                 "0,0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0, 0,0 ", 0)]
+        [DataRow("a measly one",                                "0,0, 0,0, 0,0, 0,0, 0,1, 0,0, 0,0,0, 0,0, 0, 0,0 ", 1)]
+        [DataRow("a measly one a different way",                "0,0, 0,0, 0,0, 0,0, 1,0, 0,0,0, 0,0, 0,0, 0, 0,0 ", 1)]
+        [DataRow("a spare",                                     "0,0, 0,0, 0,0, 0,10, 0,0, 0,0,0, 0,0, 0,0, 0, 0,0 ", 10)]
+        [DataRow("a single 5 frame",                            "0,0, 0,0, 0,0, 0,0, 0,0, 0,0,0, 0,0, 0,0, 0, 0,5 ", 5)]
+        [DataRow("a spare and a single",                        "0,0, 0,0, 0,10, 1,0, 0,0, 0,0,0, 0,0, 0,0, 0, 0,0 ", 12)]
+        [DataRow("a spare and a pair",                          "0,0, 0,0, 0,10, 2,0, 0,0, 0,0,0, 0,0, 0,0, 0, 0,0 ", 14)]
+        [DataRow("the factorial game",                          "0,1, 0,2, 0,3, 0,4, 0,5, 0,6, 0,7, 0,8, 0,9, 0,10, 0 ", 55)]
+        [DataRow("a spare and a single on the last frame",      "0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,10,1 ", 11)]
+        [DataRow("a spare and a pair on the last frame",        "0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,10, 2 ", 12)]
+        [DataRow("strike on the last frame",                    "0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10,0,0 ", 10)]
+        [DataRow("strike and single on the last frame",         "0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10,1,0", 11)]
+        [DataRow("strike and pair on the last frame",           "0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10,2,0", 12)]
+        [DataRow("strike and two singles on the last frame",    "0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 10,1,1", 12)]
+        public void should_calculate_score(string reason, string gameInput, int expectedScore)
         {
             int result = 0;
             var game = new TenPinsGame();

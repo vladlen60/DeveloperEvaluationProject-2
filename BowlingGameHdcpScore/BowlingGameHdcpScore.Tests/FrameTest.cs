@@ -8,40 +8,26 @@ namespace TenPinsBowlingGameHdcp.Tests
     [TestClass]
     public class FrameTest
     {
-        [DataTestMethod]
-        [DataRow(-1, "negative is out of range")]
-        [DataRow(11, "11 is too high")]
-        public void TestFailed_FirstBowl_OutOfRange(int value, string reason)
+        [TestMethod]
+        public void Should_Throw_When_Bowl_Too_Many_Pins_Total()
         {
             var frame = new Frame();
 
-            Action action = () => frame.FirstBowlScore = value;
+            frame.Bowl(6);
 
-            action.Should().Throw<ArgumentOutOfRangeException>(reason);
+            Action action = () => frame.Bowl(6);
+
+            action.Should().Throw<TooManyPinsException>();
         }
 
-        [DataTestMethod]
-        [DataRow(-1, "negative is out of range")]
-        [DataRow(11, "11 is too high")]
-        public void TestFailed_SecondBowl_OutOfRange(int value, string reason)
+        [TestMethod]
+        public void Should_Throw_When_Bowl_Too_Many_Pins()
         {
             var frame = new Frame();
 
-            Action action = () => frame.SecondBowlScore = value;
+            Action action = () => frame.Bowl(11);
 
-            action.Should().Throw<ArgumentOutOfRangeException>(reason);
-        }
-
-        [DataTestMethod]
-        [DataRow(-1, "negative is out of range")]
-        [DataRow(11, "11 is too high")]
-        public void TestFailed_ThirdBowlBonus_OutOfRange(int value, string reason)
-        {
-            var frame = new Frame();
-
-            Action action = () => frame.ThirdBowlBonusScore = value;
-
-            action.Should().Throw<ArgumentOutOfRangeException>(reason);
+            action.Should().Throw<TooManyPinsException>();
         }
 
         [DataTestMethod]
@@ -476,7 +462,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         [DataRow(0, 0)]
         [DataRow(0, 1)]
         [DataRow(1, 0)]
-        [DataRow(1, 1)]        
+        [DataRow(1, 1)]
         [DataRow(10, 10)]
         [DataRow(5, 5)]
         [DataRow(5, 0)]

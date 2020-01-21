@@ -2,19 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using TenPinsBowlingGameHdcp.Common;
-using TenPinsBowlingGameHdcp.Validators;
 
 namespace TenPinsBowlingGameHdcp.Controllers
 {
     internal class Frame
     {
-        //todo remove this const
-        const int NoBallBowled = -1;
-
-        private CommonValidator _validator = new CommonValidator();
-        private int _firstBowlScore;
-        private int _secondBowlScore;
-        private int _thirdBowlBonusScore;
         private List<int> _bowlScores = new List<int>();
         private List<int> _bonusScores = new List<int>();
 
@@ -22,7 +14,6 @@ namespace TenPinsBowlingGameHdcp.Controllers
 
         public Frame(bool isfinalFrame = false)
         {
-            _firstBowlScore = _secondBowlScore = _thirdBowlBonusScore = NoBallBowled;
             IsFinalFrame = isfinalFrame;
         }
 
@@ -31,6 +22,11 @@ namespace TenPinsBowlingGameHdcp.Controllers
             if (IsFrameClosed)
             {
                 throw new FrameClosedException();
+            }
+
+            if(_bowlScores.Sum() + kickedPins > 10)
+            {
+                throw new TooManyPinsException();
             }
 
             _bowlScores.Add(kickedPins);
@@ -98,57 +94,6 @@ namespace TenPinsBowlingGameHdcp.Controllers
                 }
 
                 return 0;
-            }
-        }
-
-        public int FirstBowlScore
-        {
-            get
-            {
-                return _firstBowlScore;
-            }
-            set
-            {
-                if (!_validator.IsValidKickedPinsCount(value))
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value));
-                }
-
-                _firstBowlScore = value;
-            }
-        }
-
-        public int SecondBowlScore
-        {
-            get
-            {
-                return _secondBowlScore;
-            }
-            set
-            {
-                if (!_validator.IsValidKickedPinsCount(value))
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value));
-                }
-
-                _secondBowlScore = value;
-            }
-        }
-
-        public int ThirdBowlBonusScore
-        {
-            get
-            {
-                return _thirdBowlBonusScore;
-            }
-            set
-            {
-                if (!_validator.IsValidKickedPinsCount(value))
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value));
-                }
-
-                _thirdBowlBonusScore = value;
             }
         }
 
