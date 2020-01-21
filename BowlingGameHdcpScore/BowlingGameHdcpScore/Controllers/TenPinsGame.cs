@@ -23,9 +23,40 @@ namespace TenPinsBowlingGameHdcp.Controllers
                 throw new ArgumentException(nameof(kickedPins));
             }
 
+            var currentFrame = GetCurrentFrame();
+            ApplyBonuses(kickedPins);
+            BowlKickedPins(kickedPins, currentFrame);
+
+            return CalculateScore();
+        }
+
+        private int CalculateScore()
+        {
+            return _frames.Select(x => x.Score).Sum();
+        }
+
+        private static void BowlKickedPins(int kickedPins, Frame currentFrame)
+        {
+            if (!currentFrame.IsFrameClosed)
+            {
+                currentFrame.Bowl(kickedPins);
+            }
+        }
+
+        private void ApplyBonuses(int kickedPins)
+        {
+            var bonusableFrames = _frames.Where(x => x.NeedsBonus);
+            foreach (var frame in bonusableFrames)
+            {
+                frame.ApplyBonus(kickedPins);
+            }
+        }
+
+        private Frame GetCurrentFrame()
+        {
             var currentFrame = _frames.LastOrDefault();
 
-            if(currentFrame != null && currentFrame.IsFinalFrame && currentFrame.IsFrameClosed && !currentFrame.NeedsBonus)
+            if (currentFrame != null && currentFrame.IsFinalFrame && currentFrame.IsFrameClosed && !currentFrame.NeedsBonus)
             {
                 throw new GameOverException();
             }
@@ -37,18 +68,7 @@ namespace TenPinsBowlingGameHdcp.Controllers
                 _frames.Add(currentFrame);
             }
 
-            var bonusableFrames = _frames.Where(x => x.NeedsBonus);
-            foreach(var frame in bonusableFrames)
-            {
-                frame.ApplyBonus(kickedPins);
-            }
-
-            if (!currentFrame.IsFrameClosed)
-            {
-                currentFrame.Bowl(kickedPins);
-            }
-
-            return _frames.Select(x => x.Score).Sum();
+            return currentFrame;
         }
     }
 }
