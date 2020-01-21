@@ -644,7 +644,7 @@ namespace TenPinsBowlingGameHdcp.Tests
         }
 
         [TestMethod]
-        public void TestFailed_OnGame_Complete_With_No_Misses_And_Bonus()
+        public void TestFailed_OnGame_Complete_Extra_Bowl()
         {
             //-- Arrange
             TenPinsGame game = new TenPinsGame();
