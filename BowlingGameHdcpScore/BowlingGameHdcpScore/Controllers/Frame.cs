@@ -1,61 +1,99 @@
-﻿using System;
-using TenPinsBowlingGameHdcp.Common;
-using TenPinsBowlingGameHdcp.Validators;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TenPinsBowlingGameHdcp.Exceptions;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("TenPinsBowlingGameHdcp.Tests")]
 
 namespace TenPinsBowlingGameHdcp.Controllers
 {
     internal class Frame
     {
-        private CommonValidator _validator = new CommonValidator();
+        private List<int> _bowlScores = new List<int>();
+        private List<int> _bonusScores = new List<int>();
 
-        public FrameStatus FrameStatus { get; private set; }
-        public int FirstBowlScore { get; private set; } = ConstTenPinsGameData.InitialValueForTheBowlThrow;
-        public int SecondBowlScore { get; private set; } = ConstTenPinsGameData.InitialValueForTheBowlThrow;
-        public int ThirdBowlBonusScore { get; private set; } = ConstTenPinsGameData.InitialValueForTheBowlThrow;
+        private int _startingPinsNumber = 10;
 
-        public bool IsFrameClose { get; private set; } = false;
-        public bool IsFrameReadyForScore { get; private set; } = false;
-        public bool IsFinalFrame { get; private set; } = false;
+        public bool IsFinalFrame { get; } = false;
 
-
-        public void SetFirstBowlScore(int kickedPinsCount)
+        public Frame(bool isfinalFrame = false)
         {
-            _validator.ValidateKickedPinsCount(kickedPinsCount);
-            FirstBowlScore = kickedPinsCount;
+            IsFinalFrame = isfinalFrame;
         }
 
-        public void SetSecondBowlScore(int kickedPinsCount)
+        public void Bowl(int kickedPins)
         {
-            _validator.ValidateKickedPinsCount(kickedPinsCount);
-            SecondBowlScore = kickedPinsCount;
+            if (IsFrameClosed)
+                throw new FrameClosedException();
+
+            if(_bowlScores.Sum() + kickedPins > _startingPinsNumber)
+                throw new TooManyPinsException();
+
+            _bowlScores.Add(kickedPins);
         }
 
-        public void SetThirdBowlBonusScore(int kickedPinsCount)
+        public void ApplyBonus(int kickedPins)
         {
-            _validator.ValidateKickedPinsCount(kickedPinsCount);
-            ThirdBowlBonusScore = kickedPinsCount;
+            if(!NeedsBonus)
+                throw new NoBonusNeededException();
+
+            _bonusScores.Add(kickedPins);
         }
 
-        public void SetIsFrameClosed(bool isSet)
+        public bool NeedsBonus
         {
-            IsFrameClose = isSet;
+            get 
+            {
+                //if a spare
+                if(IsSpare && !_bonusScores.Any())
+                    return true;
+
+                if(IsStrike && _bonusScores.Count() < 2)
+                    return true;
+
+                return false;
+            }
         }
 
-        public void SetIsFrameReadyForScore(bool isSet)
+        private bool IsSpare => _bowlScores.Count == 2 && _bowlScores.Sum() == _startingPinsNumber;
+
+        private bool IsStrike => _bowlScores.FirstOrDefault() == _startingPinsNumber;
+
+        public bool IsFrameReadyForScore
         {
-            IsFrameReadyForScore = isSet;
+            get
+            {
+                //if two balls not strike or spare
+                if (_bowlScores.Count == 2 && _bowlScores.Sum() < _startingPinsNumber)
+                    return true;
+
+                if((IsSpare || IsStrike) && NeedsBonus == false)
+                    return true;
+
+                return false;
+            }
         }
 
-        public void SetIsFinalFrame(bool isSet)
+        public int Score
         {
-            IsFinalFrame = isSet;
+            get
+            {
+                if (IsFrameReadyForScore)
+                    return _bowlScores.Sum() + _bonusScores.Sum();
+
+                return 0;
+            }
         }
 
-        public void SetFrameStatus(FrameStatus frameStatus)
+        public bool IsFrameClosed
         {
-            if (frameStatus == null)
-                throw new ArgumentNullException("The FrameStatus provided, is Null. Pls check.");
-            FrameStatus = frameStatus;
+            get
+            {
+                if (_bowlScores.FirstOrDefault() == _startingPinsNumber)
+                    return true;
+
+                return _bowlScores.Count == 2;
+            }
         }
     }
 }
